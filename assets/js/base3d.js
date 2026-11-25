@@ -173,7 +173,7 @@ function buildBase({ internals = false, clear = false } = {}) {
   const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.104, 0.104, 0.006, 48), new THREE.MeshPhysicalMaterial({ color: 0x1a1d24, roughness: 0.25, metalness: 0.8 }));
   cap.position.y = 0.572;
   knob.add(collar, body, cap);
-  knob.position.set(-0.27, 0, 0.66);   // just behind the front display panel, as on the product
+  knob.position.set(0, 0, 0.66);   // centred behind the OLED display (the screen is at x = 0)
 
   const order = [];
   if (internals) {
