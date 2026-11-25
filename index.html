@@ -3,421 +3,442 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BottleMate · Every sip, counted.</title>
-  <meta name="description" content="BottleMate is a smart base for the bottle you already own. It notices every sip, reminds you to drink at your own pace and syncs with the free Android app.">
-  <meta name="theme-color" content="#061226">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/icon-512.png">
+  <title>BottleMate · Smart hydration base for any bottle</title>
+  <meta name="description" content="BottleMate is a smart base that sits under any water bottle, counts every sip and reminds you to drink only when you need to. Science-based daily goal, OLED screen, light ring and a free Android app.">
+  <meta name="theme-color" content="#eaf3ff">
+  <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo/bottlemate-icon-512.png">
   <meta property="og:type" content="website">
   <meta property="og:title" content="BottleMate · Every sip, counted.">
-  <meta property="og:description" content="A smart base for the bottle you already own. Counts every sip, reminds you at your pace.">
-  <meta property="og:image" content="https://bottlemate.github.io/assets/img/og.jpg">
+  <meta property="og:description" content="A smart hydration base for the bottle you already own.">
+  <meta property="og:image" content="https://bottlemate.github.io/assets/logo/social-share-og.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
+  <script>
+    if (location.protocol !== 'file:' && 'IntersectionObserver' in window && 'ResizeObserver' in window &&
+        !matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) {
+      try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+        if (gl) {
+          document.documentElement.classList.add('has3d');
+          gl.getExtension('WEBGL_lose_context')?.loseContext();
+        }
+      } catch {}
+    }
+  </script>
 </head>
 <body>
-  <script>(function(){var d=document.documentElement;d.classList.add("js");try{var c=document.createElement("canvas");if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&(c.getContext("webgl2")||c.getContext("webgl")))d.classList.add("has3d")}catch(e){}})();</script>
   <a class="skip" href="#main">Skip to content</a>
+  <div class="page-bg" aria-hidden="true"><img src="assets/img/bg/app-a-wide.webp" alt=""></div>
+  <div class="progress" aria-hidden="true"></div>
 
-  <header class="nav" id="top">
-    <div class="wrap nav-in">
-      <a class="brand" href="#top" aria-label="BottleMate home">
-        <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8c3.2 4 6.4 7.7 6.4 11.4A6.4 6.4 0 0 1 5.6 14.2C5.6 10.5 8.8 6.8 12 2.8z"/></svg></span>
-        <span class="wm">Bottle<span>Mate</span></span>
-      </a>
-      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
-        <span></span><span></span>
-      </button>
-      <nav id="nav-links" class="nav-links" aria-label="Main">
-        <a href="#how">How it works</a>
-        <a href="#app">The app</a>
-        <a href="#base">The base</a>
-        <a href="#manual">Manual</a>
+  <header class="site-header">
+    <nav class="nav glass" aria-label="Main">
+      <a class="brand" href="index.html"><img src="assets/logo/bottlemate-icon.svg" alt="" width="36" height="36"><span>Bottle<span>Mate</span></span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="why.html">Why water</a>
+        <a href="app.html">The app</a>
+        <a href="light-ring.html">Light ring</a>
+        <a href="paperwork.html">Manuals</a>
         <a href="#support">Support</a>
-        <a class="btn btn-primary btn-sm" href="#download">Get the app</a>
-      </nav>
-    </div>
+        <a class="btn btn-primary" href="#download">Get the app</a>
+      </div>
+      <a class="btn btn-primary btn-sm" href="#download">Get the app</a>
+    </nav>
   </header>
 
   <main id="main">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-stage">
-        <div class="hero-bg" aria-hidden="true"><span class="aurora a1"></span><span class="aurora a2"></span><span class="aurora a3"></span></div>
-        <div class="wrap hero-in">
+    <!-- HERO: scroll plays a sip on the 3D base -->
+    <section class="hero pin" aria-labelledby="hero-title">
+      <div class="pin-stage">
+        <div class="container hero-grid">
           <div class="hero-copy reveal">
-            <p class="kicker">Smart base v2.0 · Android app 1.0</p>
-            <h1>Every sip,<br><span class="grad">counted.</span></h1>
-            <p class="lead">The smart base for the bottle you already own. It notices every sip and reminds you to drink at a pace that fits your day.</p>
-            <div class="cta-row">
-              <a class="btn btn-primary" href="#download">
-                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
-                Download for Android
-              </a>
-              <a class="btn btn-ghost" href="#manual">Read the manual</a>
+            <p class="kicker pill">Smart hydration base</p>
+            <h1 id="hero-title">Every sip,<br><span class="grad-text">counted.</span></h1>
+            <p class="lead">BottleMate sits under any bottle, notices every sip and reminds you to drink only when you actually need to.</p>
+            <div class="actions">
+              <a class="btn btn-primary btn-lg" href="#download"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></svg>Get the app</a>
+              <a class="btn btn-glass btn-lg" href="#demo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5 19 12 8 18.5z"/></svg>Watch the demo</a>
             </div>
-            <ul class="hero-points">
-              <li><b>Any bottle</b> up to 5 kg</li>
-              <li><b>Sips from 25 ml</b> logged automatically</li>
-              <li><b>Works offline</b>, stores 500 sips</li>
-            </ul>
+            <div class="trust">
+              <span>Any bottle</span><span style="--c:#6d7bff">Science-based goal</span><span style="--c:#19c35a">Works without a phone</span>
+            </div>
           </div>
-          <div class="hero-visual" data-step="0">
-            <img class="hero-fallback" src="assets/img/anatomy.webp" width="1520" height="840" alt="The BottleMate base: a round black puck with a rotary knob on top, a small OLED screen showing 43 minutes to the next sip, and a blue light ring around its side." fetchpriority="high">
+          <div class="stage bare reveal" id="hero-stage" data-step="0" style="--d:.15s">
+            <img class="fallback" src="assets/img/base-cutout.webp" fetchpriority="high" width="1200" height="1200" alt="The BottleMate base with a bottle on it: a round black puck with a rotary knob, an OLED screen and a blue light ring.">
             <canvas id="hero3d" aria-hidden="true"></canvas>
+            <p class="hint" aria-hidden="true"><span>Drag to rotate</span><span>Scroll to take a sip</span></p>
             <ol class="story" aria-hidden="true">
-              <li><span>01</span>Next sip in 43 min</li>
-              <li><span>02</span>Time to drink: 220 ml</li>
-              <li><span>03</span>Bottle lifted, timer paused</li>
-              <li><span>04</span>+180 ml logged</li>
-              <li><span>05</span>Nice sip! Next one re-planned</li>
+              <li><i>01</i>Next sip in 43 min</li>
+              <li style="--c:var(--led-pink)"><i>02</i>Time to drink: 220 ml</li>
+              <li><i>03</i>Lifted: timer paused</li>
+              <li><i>04</i>+180 ml logged</li>
+              <li><i>05</i>Nice sip! Next one re-planned</li>
             </ol>
-            <p class="hint" aria-hidden="true"><span class="hint-drag">Drag to rotate</span><span class="hint-scroll">Scroll to take a sip</span></p>
           </div>
         </div>
-        <div class="ring-line" aria-hidden="true"></div>
       </div>
     </section>
 
-    <!-- 3 PROMISES -->
-    <section class="promises" aria-label="What BottleMate does">
-      <div class="wrap grid3">
-        <article class="promise reveal">
-          <span class="p-icon c-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8c3.2 4 6.4 7.7 6.4 11.4A6.4 6.4 0 0 1 5.6 14.2C5.6 10.5 8.8 6.8 12 2.8z"/></svg></span>
-          <h3>Counts every sip</h3>
-          <p>A precision scale under your bottle weighs each drink to about 1 g. No buttons to press, nothing to type.</p>
-        </article>
-        <article class="promise reveal">
-          <span class="p-icon c-violet" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span>
-          <h3>Reminds at your pace</h3>
-          <p>The light ring and a soft chime tell you when it's time to drink. Drink on your own and the reminder waits.</p>
-        </article>
-        <article class="promise reveal">
-          <span class="p-icon c-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 12 6l7 6.5M7 11v8h10v-8"/><path d="M10 19v-4h4v4"/></svg></span>
-          <h3>Works without a phone</h3>
-          <p>The base runs on its own and keeps 500 sips. The app adds history, a 3D body view and cloud backup.</p>
-        </article>
+    <!-- PROBLEM -->
+    <section class="section" aria-labelledby="problem-title">
+      <div class="container">
+        <header class="section-head center reveal">
+          <p class="kicker">The problem</p>
+          <h2 id="problem-title">Why it's so easy to forget to drink</h2>
+        </header>
+        <div class="grid g3">
+          <article class="glass card reveal" data-tilt>
+            <span class="ico pink"><svg viewBox="0 0 24 24"><path d="M6.8 9.5a5.2 5.2 0 1 1 10.4 0c0 4 1.7 5.7 2.3 6.5h-15c.6-.8 2.3-2.5 2.3-6.5ZM10 19a2.2 2.2 0 0 0 4 0"/><path d="M4 4l16 16"/></svg></span>
+            <h3>Timer apps nag blindly</h3>
+            <p>They buzz every hour whether you just drank or not, so you start ignoring them.</p>
+          </article>
+          <article class="glass card reveal" data-tilt style="--d:.08s">
+            <span class="ico violet"><svg viewBox="0 0 24 24"><path d="M10 3h4v4l3 3v8.5a2.5 2.5 0 0 1-2.5 2.5h-5A2.5 2.5 0 0 1 7 18.5V10l3-3zM7 13h10"/></svg></span>
+            <h3>Smart bottles lock you in</h3>
+            <p>They're expensive, hard to clean, and you can only use that one bottle.</p>
+          </article>
+          <article class="glass card reveal" data-tilt style="--d:.16s">
+            <span class="ico gold"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></span>
+            <h3>Focus switches off thirst</h3>
+            <p>Deep in work or study, you simply don't notice until you have a headache.</p>
+          </article>
+        </div>
+        <p class="center reveal" style="margin-top:28px"><a class="btn btn-glass" href="why.html">Why hydration matters, with evidence <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></p>
       </div>
     </section>
 
     <!-- HOW IT WORKS -->
-    <section class="section how" id="how">
-      <div class="wrap">
-        <header class="sec-head reveal">
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <header class="section-head center reveal">
           <p class="kicker">How it works</p>
-          <h2>Just drink. BottleMate does the rest.</h2>
-          <p class="sub">Put your bottle on the base. This is what happens every time you take a sip.</p>
+          <h2 id="how-title">Good habits. Less guesswork.</h2>
+          <p class="sub">Calibrate once for your bottle, then drink as usual. BottleMate keeps track in the background.</p>
         </header>
-        <ol class="steps">
-          <li class="step reveal">
-            <img src="assets/img/oled_lift.webp" width="900" height="450" alt="Base screen: Lifted, enjoy a sip, timer paused." loading="lazy">
-            <span class="no">1</span>
-            <h3>Lift your bottle</h3>
-            <p>The base notices and pauses the countdown.</p>
+        <ol class="grid g4 steps">
+          <li class="glass card reveal">
+            <div class="oled"><img src="assets/img/oled/bottle.webp" width="900" height="450" alt="Base screen: Bottle, 506 ml of 1105 ml left." loading="lazy"></div>
+            <div style="display:flex;gap:12px;align-items:center;margin-top:18px"><span class="num">1</span><h3>Put your bottle on it</h3></div>
+            <p style="margin-top:8px">Any bottle, flask or mug. A quick 3-step calibration and you're ready.</p>
           </li>
-          <li class="step reveal">
-            <img src="assets/img/oled_back.webp" width="900" height="450" alt="Base screen: Back on the base, 506 ml left." loading="lazy">
-            <span class="no">2</span>
-            <h3>Drink, put it back</h3>
-            <p>Let go and wait about 3 seconds while it weighs.</p>
+          <li class="glass card reveal" style="--d:.08s">
+            <div class="oled"><img src="assets/img/oled/sip.webp" width="900" height="450" alt="Base screen: plus 180 ml, 2069 of 2800." loading="lazy"></div>
+            <div style="display:flex;gap:12px;align-items:center;margin-top:18px"><span class="num">2</span><h3>Drink as usual</h3></div>
+            <p style="margin-top:8px">Lift, sip, put it back. BottleMate measures the difference: "+180 ml".</p>
           </li>
-          <li class="step reveal">
-            <img src="assets/img/oled_sip.webp" width="900" height="450" alt="Base screen: plus 180 ml, 2069 of 2800." loading="lazy">
-            <span class="no">3</span>
-            <h3>Sip logged</h3>
-            <p>A rising beep and a ripple on the light ring.</p>
+          <li class="glass card reveal" style="--d:.16s">
+            <div class="oled"><img src="assets/img/oled/home_alert.webp" width="900" height="450" alt="Base screen: Drink now, 220 ml, press: on it." loading="lazy"></div>
+            <div style="display:flex;gap:12px;align-items:center;margin-top:18px"><span class="num">3</span><h3>Nudged only when needed</h3></div>
+            <p style="margin-top:8px">Drink early and it waits longer. Fall behind and it reminds you sooner.</p>
           </li>
-          <li class="step reveal">
-            <img src="assets/img/oled_home.webp" width="900" height="450" alt="Base screen: 43 minutes to the next sip of 300 ml, 54 percent of the goal." loading="lazy">
-            <span class="no">4</span>
-            <h3>Next sip re-planned</h3>
-            <p>A bigger drink buys a longer break before the next reminder.</p>
+          <li class="glass card reveal" style="--d:.24s">
+            <div class="oled"><img src="assets/img/oled/goal.webp" width="900" height="450" alt="Base screen: Goal reached!" loading="lazy"></div>
+            <div style="display:flex;gap:12px;align-items:center;margin-top:18px"><span class="num">4</span><h3>Hit your goal</h3></div>
+            <p style="margin-top:8px">The light ring glows gold when you've had enough for the day.</p>
           </li>
         </ol>
-        <p class="note reveal">BottleMate counts a sip only when the bottle was fully lifted for 1.5 s or more, is back and still for about 3 s, and the weight dropped by 25 ml or more. Bumps and a hand resting on it never count. Put back 30 g heavier and it's logged as a refill.</p>
-      </div>
-    </section>
-
-    <!-- APP -->
-    <section class="section app" id="app">
-      <div class="wrap app-in">
-        <div class="app-copy">
-          <header class="sec-head left reveal">
-            <p class="kicker">The app · free</p>
-            <h2>Your day of water, at a glance.</h2>
-            <p class="sub">Five tabs along the bottom. Real screenshots from a Pixel&nbsp;7&nbsp;Pro.</p>
-          </header>
-          <div class="tabs reveal" role="tablist" aria-label="App screens">
-            <button role="tab" id="t-home" aria-controls="screen" aria-selected="true" data-img="home" data-alt="App Home tab: today's progress ring, next-sip countdown and live data from the base.">
-              <b>Home</b><span>Today's progress, the next-sip countdown, live data from your base and today's sips.</span>
-            </button>
-            <button role="tab" id="t-body" aria-controls="screen" aria-selected="false" tabindex="-1" data-img="body" data-alt="App Body 3D tab: a 3D body with hydration percentages for brain, arms, trunk and legs.">
-              <b>Body 3D</b><span>A hologram that fills with water as you drink, with hydration by body region.</span>
-            </button>
-            <button role="tab" id="t-insights" aria-controls="screen" aria-selected="false" tabindex="-1" data-img="insights" data-alt="App Insights tab: daily average, goal met and streak, a 7-day chart and reminder stats.">
-              <b>Insights</b><span>A 7-day chart, your hourly pattern, streaks and reminder stats.</span>
-            </button>
-            <button role="tab" id="t-device" aria-controls="screen" aria-selected="false" tabindex="-1" data-img="device" data-alt="App Device tab: the BottleMate base with battery, signal, room temperature and alert settings.">
-              <b>Device</b><span>Battery, signal, alert output, re-calibrate, find my base and Wi-Fi backup.</span>
-            </button>
-            <button role="tab" id="t-profile" aria-controls="screen" aria-selected="false" tabindex="-1" data-img="profile" data-alt="App Profile tab: free account, daily goal, smart silencing, quiet hours and notifications.">
-              <b>Profile</b><span>A free account, your daily goal, quiet hours, smart options and theme.</span>
-            </button>
-          </div>
-        </div>
-        <div class="app-phone reveal">
-          <div class="phone" id="screen" role="tabpanel" aria-labelledby="t-home" tabindex="0">
-            <img id="screen-img" src="assets/img/home.webp" width="780" height="1606" alt="App Home tab: today's progress ring, next-sip countdown and live data from the base.">
-          </div>
-        </div>
-      </div>
-      <div class="wrap">
-        <div class="science reveal">
-          <div>
-            <p class="kicker">A goal made for you</p>
-            <h3>Based on research, not a flat 2 litres.</h3>
-          </div>
-          <p>Your daily target comes from the Yamada et al. 2022 (<i>Science</i>) water-turnover model: weight, sex, age, activity, and today's temperature, humidity and altitude. Water from food is subtracted (IOM 2005) and EFSA safety limits apply. A warm room or dry air brings the next reminder sooner.</p>
+        <div class="grid g3" style="margin-top:22px">
+          <div class="glass card reveal stat"><b><span data-count="25">25</span> <small>ml</small></b><p>Smallest sip it counts. Bumps, slides and resting hands are ignored.</p></div>
+          <div class="glass card reveal stat" style="--d:.08s"><b><span data-count="500">500</span> <small>records</small></b><p>Kept on the base, synced to the app the next time it connects.</p></div>
+          <div class="glass card reveal stat" style="--d:.16s"><b>22:30<small> → 06:30</small></b><p>Default quiet hours: no sounds at night, just a calm screen.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- BASE -->
-    <section class="section base dark" id="base">
-      <div class="wrap">
-        <header class="sec-head reveal">
-          <p class="kicker">The base</p>
-          <h2>Small puck. A lot inside.</h2>
-          <p class="sub">A load cell, an ESP32-C3, a 12-LED colour ring and a screen you control with one knob.</p>
+    <!-- FEATURES -->
+    <section class="section" aria-labelledby="feat-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker">Features</p>
+          <h2 id="feat-title">Small puck. Smart in every way.</h2>
         </header>
-        <div class="base-grid">
-          <figure class="base-img base-3d reveal">
-            <img class="base-fallback" src="assets/img/exploded.webp" width="1600" height="900" alt="Exploded view of the BottleMate base showing the top plate, knob, circuit board, light ring, load cell and bottom shell." loading="lazy">
-            <canvas id="base3d" aria-hidden="true"></canvas>
-            <div class="part-labels" aria-hidden="true">
-              <span class="part-label" data-part="knob" data-side="l">Rotary knob with push</span>
-              <span class="part-label" data-part="plate" data-side="r">Top plate on the scale</span>
-              <span class="part-label" data-part="upper" data-side="l">Shell with 128×64 OLED</span>
-              <span class="part-label" data-part="ring" data-side="r">12-LED colour ring</span>
-              <span class="part-label" data-part="pcb" data-side="l">ESP32-C3 · BLE + Wi-Fi</span>
-              <span class="part-label" data-part="cell" data-side="r">Load cell, about 1 g</span>
-              <span class="part-label" data-part="bottom" data-side="l">Base · 5 V USB-C</span>
-            </div>
-            <figcaption class="hint">Scroll to open it up · drag to rotate</figcaption>
-          </figure>
-          <dl class="specs reveal">
-            <div><dt>Radio</dt><dd>ESP32-C3 · Bluetooth LE · 2.4 GHz Wi-Fi</dd></div>
-            <div><dt>Scale</dt><dd>Load cell, about 1 g · sips from 25 ml · max 5 kg</dd></div>
-            <div><dt>Screen · control</dt><dd>128 × 64 OLED · rotary knob with push</dd></div>
-            <div><dt>Light · sound</dt><dd>12-LED colour ring · buzzer</dd></div>
-            <div><dt>Room sensor</dt><dd>Temperature and humidity</dd></div>
-            <div><dt>Power · memory</dt><dd>5 V USB-C, under 0.5 A · 500 sips stored</dd></div>
-            <div><dt>Versions</dt><dd>Firmware 2.0.2 · App 1.0.0 (Android 7.0+)</dd></div>
+        <div class="grid g3">
+          <article class="glass card reveal" data-tilt><span class="ico"><svg viewBox="0 0 24 24"><path d="M10 3h4v4l3 3v8.5a2.5 2.5 0 0 1-2.5 2.5h-5A2.5 2.5 0 0 1 7 18.5V10l3-3zM7 13h10"/></svg></span><h3>Any bottle</h3><p>The smarts are in the base, not the bottle. Keep the one you love.</p></article>
+          <article class="glass card reveal" data-tilt style="--d:.06s"><span class="ico aqua"><svg viewBox="0 0 24 24"><path d="M12 2.8C9.1 7 5.5 10.5 5.5 14.4a6.5 6.5 0 0 0 13 0C18.5 10.5 14.9 7 12 2.8Z"/></svg></span><h3>Counts every sip</h3><p>A precision scale weighs to about 1 g and counts sips from 25 ml.</p></article>
+          <article class="glass card reveal" data-tilt style="--d:.12s"><span class="ico pink"><svg viewBox="0 0 24 24"><path d="M6.8 9.5a5.2 5.2 0 1 1 10.4 0c0 4 1.7 5.7 2.3 6.5h-15c.6-.8 2.3-2.5 2.3-6.5ZM10 19a2.2 2.2 0 0 0 4 0"/></svg></span><h3>Reminders that know you drank</h3><p>Every sip buys you time: bigger sips, longer breaks. No blind timers.</p></article>
+          <article class="glass card reveal" data-tilt><span class="ico violet"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></span><h3>A goal made for you</h3><p>From a 2022 <i>Science</i> study of 5,604 people, adjusted for today's room temperature and humidity.</p></article>
+          <article class="glass card reveal" data-tilt style="--d:.06s"><span class="ico green"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 3v2m0 14v2M3 12h2m14 0h2"/></svg></span><h3>Works on its own</h3><p>OLED screen, one knob, a light ring and soft chimes. No phone or account needed.</p></article>
+          <article class="glass card reveal" data-tilt style="--d:.12s"><span class="ico gold"><svg viewBox="0 0 24 24"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8z"/></svg></span><h3>Better with the app</h3><p>Dashboard, 3D body hologram, insights, notifications and Wi-Fi cloud backup.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEET THE BASE: exploded 3D -->
+    <section class="section" id="base" aria-labelledby="base-title">
+      <div class="container split wide-l">
+        <div class="stage bare reveal" id="base-stage" style="max-height:none">
+          <img class="fallback" src="assets/img/exploded-cutout.webp" width="1200" height="1200" alt="Exploded view of the BottleMate base: knob, top plate, shell with OLED, LED ring, circuit board, load cell and bottom shell." loading="lazy">
+          <canvas id="base3d" aria-hidden="true"></canvas>
+          <div class="part-labels" aria-hidden="true">
+            <span class="part-label" data-part="knob" data-side="l">Rotary knob · turn, press, hold</span>
+            <span class="part-label" data-part="plate" data-side="r">Weighing platform</span>
+            <span class="part-label" data-part="upper" data-side="l">Shell · 128×64 OLED</span>
+            <span class="part-label" data-part="ring" data-side="r">12-LED light ring</span>
+            <span class="part-label" data-part="pcb" data-side="l">ESP32-C3 · BLE + Wi-Fi</span>
+            <span class="part-label" data-part="cell" data-side="r">Load cell · ~1 g</span>
+            <span class="part-label" data-part="bottom" data-side="l">Bottom shell</span>
+          </div>
+          <p class="hint" aria-hidden="true" style="top:auto;bottom:16px"><span>Scroll to open it up</span><span>Drag to rotate</span></p>
+        </div>
+        <div class="reveal" style="--d:.1s">
+          <p class="kicker">Meet the base</p>
+          <h2 id="base-title">One knob.<br>One glance.</h2>
+          <p class="sub">Turn to flip pages, press for the menu, hold to go home or pair your phone. A custom PCB, a 24-bit scale and a room sensor sit inside a layered round shell.</p>
+          <dl class="spec-grid" aria-label="Technical specifications">
+            <div class="glass"><dt>Processor</dt><dd>ESP32-C3<small>Bluetooth LE 5 · Wi-Fi 2.4 GHz</small></dd></div>
+            <div class="glass"><dt>Scale</dt><dd>24-bit load cell<small>About 1 g resolution</small></dd></div>
+            <div class="glass"><dt>Sip detection</dt><dd>From 25 ml<small>Adjustable 10–60 ml</small></dd></div>
+            <div class="glass"><dt>Display</dt><dd>White OLED<small>128 × 64 pixels</small></dd></div>
+            <div class="glass"><dt>Controls</dt><dd>Rotary knob<small>Turn, press, hold</small></dd></div>
+            <div class="glass"><dt>Sensors</dt><dd>Room climate<small>Temperature and humidity</small></dd></div>
+            <div class="glass"><dt>Light and sound</dt><dd>12 RGB LEDs<small>Light ring and buzzer</small></dd></div>
+            <div class="glass"><dt>Power</dt><dd>Rechargeable Li-ion<small>USB charging</small></dd></div>
           </dl>
         </div>
-        <div class="oled-strip reveal" aria-label="Pages on the base's screen">
-          <figure><img src="assets/img/oled_home.webp" width="900" height="450" alt="Home page: next sip in 43 minutes." loading="lazy"><figcaption>Home · next sip</figcaption></figure>
-          <figure><img src="assets/img/oled_today.webp" width="900" height="450" alt="Today page: 1889 ml of 2800 with an hourly chart." loading="lazy"><figcaption>Today · ml per hour</figcaption></figure>
-          <figure><img src="assets/img/oled_bottle.webp" width="900" height="450" alt="Bottle page: 506 ml of 1105 ml left." loading="lazy"><figcaption>Bottle · water left</figcaption></figure>
-          <figure><img src="assets/img/oled_room.webp" width="900" height="450" alt="Room page: 28 degrees, 76 percent humidity, drink more." loading="lazy"><figcaption>Room · temp, humidity</figcaption></figure>
-          <figure><img src="assets/img/oled_device.webp" width="900" height="450" alt="Device page: phone online, Wi-Fi OK, battery 86 percent." loading="lazy"><figcaption>Device · phone, Wi-Fi</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- THE SCREEN -->
+    <section class="section" aria-labelledby="screen-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker">The screen</p>
+          <h2 id="screen-title">Everything you need, at a glance.</h2>
+          <p class="sub">The real 128 × 64 OLED. Five pages, a menu and friendly little animations. No phone needed.</p>
+        </header>
+        <div class="rail reveal" tabindex="0" aria-label="Base screens, scroll sideways">
+          <figure><div class="oled"><img src="assets/img/oled/home.webp" width="900" height="450" alt="Home page: 43 minutes to the next sip of 300 ml, 54 percent." loading="lazy"></div><figcaption>Home<span>Next sip, today</span></figcaption></figure>
+          <figure><div class="oled"><img src="assets/img/oled/today.webp" width="900" height="450" alt="Today page: 1889 ml of 2800, bar chart per hour." loading="lazy"></div><figcaption>Today<span>ml per hour</span></figcaption></figure>
+          <figure><div class="oled"><img src="assets/img/oled/bottle.webp" width="900" height="450" alt="Bottle page: 506 ml of 1105 ml." loading="lazy"></div><figcaption>Bottle<span>Water left</span></figcaption></figure>
+          <figure><div class="oled"><img src="assets/img/oled/room.webp" width="900" height="450" alt="Room page: 28 degrees, 76 percent humidity." loading="lazy"></div><figcaption>Room<span>Temp, humidity</span></figcaption></figure>
+          <figure><div class="oled"><img src="assets/img/oled/device.webp" width="900" height="450" alt="Device page: phone online, Wi-Fi OK." loading="lazy"></div><figcaption>Device<span>Phone, Wi-Fi, power</span></figcaption></figure>
+          <figure><div class="oled"><img src="assets/img/oled/menu.webp" width="900" height="450" alt="Menu: icon cards carousel." loading="lazy"></div><figcaption>Menu<span>Press the knob</span></figcaption></figure>
+          <figure><div class="oled"><img src="assets/img/oled/refill.webp" width="900" height="450" alt="Refilled plus 450 ml." loading="lazy"></div><figcaption>Refill<span>Blue → aqua ring</span></figcaption></figure>
+          <figure><div class="oled"><img src="assets/img/oled/sip_card.webp" width="900" height="450" alt="Nice sip!" loading="lazy"></div><figcaption>Nice sip!<span>After every drink</span></figcaption></figure>
+          <figure><div class="oled"><img src="assets/img/oled/home_quiet.webp" width="900" height="450" alt="Quiet until 06:30." loading="lazy"></div><figcaption>Quiet hours<span>No sounds at night</span></figcaption></figure>
         </div>
+      </div>
+    </section>
+
+    <!-- LIGHT RING TEASER -->
+    <section class="section" aria-labelledby="ring-title">
+      <div class="container split">
+        <div class="reveal">
+          <p class="kicker">The light ring</p>
+          <h2 id="ring-title">A light ring that talks.</h2>
+          <p class="sub">One colour per meaning, so a glance tells you what's going on. Aqua for water, pink when it's time to drink, gold when you hit your goal, green when your phone connects.</p>
+          <div class="legend" style="margin-top:22px">
+            <span style="--c:var(--led-aqua)"><i></i>Water</span><span style="--c:var(--led-pink)"><i></i>Time to drink</span><span style="--c:var(--led-gold)"><i></i>Goal</span><span style="--c:var(--led-green)"><i></i>Phone</span><span style="--c:var(--led-orange)"><i></i>Calibrating</span><span style="--c:var(--led-white)"><i></i>Find my base</span><span style="--c:var(--led-red)"><i></i>Check scale</span>
+          </div>
+          <p style="margin-top:28px"><a class="btn btn-primary" href="light-ring.html#effects">Try the light ring simulator</a></p>
+        </div>
+        <div class="glass-dark reveal ring-stage" style="--d:.1s">
+          <img class="ring-fallback" src="assets/img/hero-front-clean.webp" width="1600" height="900" loading="lazy" decoding="async" alt="The base with its aqua light ring lit.">
+          <canvas id="ring-mini" aria-label="The light ring cycling through its effects" role="img"></canvas>
+          <p class="ring-label" id="ring-mini-label" aria-hidden="true"><i></i><span>Start-up · aqua sweep</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- APP TEASER -->
+    <section class="section" id="app" aria-labelledby="app-title">
+      <div class="container">
+        <div class="glass pad-lg split wide-r reveal">
+          <div style="display:grid;place-items:center">
+            <div class="phone" data-tilt="8">
+              <div class="screen" id="app-screen"><img loading="lazy" decoding="async" src="assets/img/app/real-home.webp" width="780" height="1606" alt="App Home: today's progress ring, next sip countdown and live data from the base."></div>
+              <span class="phone-shine"></span>
+            </div>
+          </div>
+          <div>
+            <p class="kicker">The Android app</p>
+            <h2 id="app-title">Your hydration, in full colour.</h2>
+            <p class="sub" id="app-tab-text">Home: a liquid progress ring, your next sip and live data from the base.</p>
+            <div class="seg" role="tablist" aria-label="App screens" data-screen-tabs="#app-screen" data-text="#app-tab-text" style="margin-top:22px">
+              <button role="tab" aria-selected="true" data-src="assets/img/app/real-home.webp" data-alt="App Home tab" data-text="Home: a liquid progress ring, your next sip and live data from the base.">Home</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-src="assets/img/app/real-body.webp" data-alt="App Body 3D tab" data-text="Body 3D: watch a hologram of your body fill up as you drink.">Body 3D</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-src="assets/img/app/real-insights.webp" data-alt="App Insights tab" data-text="Insights: your week, your day by the hour, and how you respond to reminders.">Insights</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-src="assets/img/app/real-device.webp" data-alt="App Device tab" data-text="Device: battery, calibration, Wi-Fi backup and Find my base.">Device</button>
+              <button role="tab" aria-selected="false" tabindex="-1" data-src="assets/img/app/real-profile.webp" data-alt="App Profile tab" data-text="Profile: tune your goal, quiet hours and theme, light or dark.">Profile</button>
+            </div>
+            <div class="actions" style="margin-top:28px">
+              <a class="btn btn-primary" href="#download">Download for Android</a>
+              <a class="btn btn-glass" href="app.html">Tour the app <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCIENCE -->
+    <section class="section" id="science" aria-labelledby="science-title">
+      <div class="container split">
+        <div class="reveal">
+          <p class="kicker">The science</p>
+          <h2 id="science-title">A goal shaped by you and your day.</h2>
+          <p class="sub">Most apps say "drink 8 glasses". BottleMate uses the water-turnover model from Yamada et al., <i>Science</i> (2022): your weight, sex, age and activity, plus the temperature and humidity of your room right now. Water from food is subtracted and safety limits are applied.</p>
+          <p class="note" style="margin-top:22px"><b>A wellness aid, not a medical device.</b> If you have heart, kidney or liver disease, or are on a fluid restriction, follow your doctor's advice.</p>
+          <p style="margin-top:24px"><a class="btn btn-glass" href="why.html">Why it matters: benefits and evidence <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></p>
+        </div>
+        <div class="grid g2 reveal" style="--d:.1s">
+          <div class="glass card stat"><b data-count="5604">5,604</b><p>people measured</p></div>
+          <div class="glass card stat"><b data-count="23">23</b><p>countries</p></div>
+          <div class="glass card stat full" style="grid-column:1/-1">
+            <p class="mono" style="margin:0 0 12px">Example goals (app = base)</p>
+            <div class="grid g3" style="gap:12px">
+              <div><b style="font-size:1.9rem">2,750<small> ml</small></b><p style="margin-top:4px;font-size:.84rem">Male, 68 kg, 24 y, lightly active, 26 °C</p></div>
+              <div><b style="font-size:1.9rem">2,000<small> ml</small></b><p style="margin-top:4px;font-size:.84rem">Female, 55 kg, 30 y, sedentary, 22 °C</p></div>
+              <div><b style="font-size:1.9rem">4,050<small> ml</small></b><p style="margin-top:4px;font-size:.84rem">Male, 75 kg, 21 y, athlete, 30 °C</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO VIDEOS -->
+    <section class="section" id="demo" aria-labelledby="demo-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker">Product demos</p>
+          <h2 id="demo-title">See BottleMate in action.</h2>
+        </header>
+        <div class="grid g2">
+          <div class="video-card reveal" data-sound>
+            <video preload="none" poster="assets/video/product-demo.jpg" playsinline><source src="assets/video/product-demo.mp4" type="video/mp4"></video>
+            <button class="play" type="button" aria-label="Play the product walkthrough"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+            <p class="vc-label"><span>Product walkthrough</span>From prototype to PCB to app</p>
+          </div>
+          <div class="video-card reveal" data-sound style="--d:.08s">
+            <video preload="none" poster="assets/video/base-standalone.jpg" playsinline><source src="assets/video/base-standalone.mp4" type="video/mp4"></video>
+            <button class="play" type="button" aria-label="Play: using the base without a phone"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+            <p class="vc-label"><span>Works without the app</span>The base on its own</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IN THE BOX -->
+    <section class="section" aria-labelledby="box-title">
+      <div class="container">
+        <header class="section-head center reveal">
+          <p class="kicker">In the box</p>
+          <h2 id="box-title">Unbox, calibrate, drink.</h2>
+          <p class="sub">Everything you need to get going, packed in the BottleMate box.</p>
+        </header>
+        <figure class="glass inbox-hero reveal-img"><img src="assets/img/paper/box.webp" width="1800" height="804" alt="The BottleMate box: a mailer box with a dark lid sticker and a blue light-ring line running round the sides." loading="lazy"></figure>
+        <div class="inbox-items">
+          <figure class="glass reveal" data-tilt="5"><div class="pic"><img src="assets/img/base-cutout.webp" width="1200" height="1200" alt="" loading="lazy"></div><figcaption>BottleMate base<span>Scale, screen, knob, light ring</span></figcaption></figure>
+          <figure class="glass reveal" data-tilt="5" style="--d:.06s"><div class="pic"><img src="assets/img/paper/manual-mockup.webp" width="1800" height="1125" alt="" loading="lazy"></div><figcaption>User manual<span>A3 fold-out</span></figcaption></figure>
+          <figure class="glass reveal" data-tilt="5" style="--d:.12s"><div class="pic"><img src="assets/img/paper/guide-cover.webp" width="700" height="1459" alt="" loading="lazy"></div><figcaption>Pocket guide<span>A5 quick start</span></figcaption></figure>
+          <figure class="glass reveal" data-tilt="5" style="--d:.18s"><div class="pic"><img src="assets/img/paper/warranty-front.webp" width="1400" height="992" alt="" loading="lazy"></div><figcaption>Warranty card<span>Keep it with your receipt</span></figcaption></figure>
+        </div>
+        <p class="center reveal" style="margin-top:28px"><a class="btn btn-glass" href="paperwork.html">See the manuals and paperwork <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></p>
       </div>
     </section>
 
     <!-- DOWNLOAD -->
-    <section class="section download" id="download">
-      <div class="wrap">
-        <div class="dl-card reveal">
-          <div class="dl-main">
-            <p class="kicker">Download</p>
-            <h2>Get the BottleMate app</h2>
-            <p class="sub">Free for Android 7.0 and newer. Pair it with your base over Bluetooth in under a minute.</p>
-            <div class="cta-row">
-              <a class="btn btn-primary btn-lg" href="downloads/BottleMate-1.0.apk" download>
-                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
-                Download APK
-              </a>
-              <span class="meta mono">v1.0 · Android 7.0+</span>
+    <section class="section" id="download" aria-labelledby="dl-title">
+      <div class="container">
+        <div class="glass pad-lg reveal" style="overflow:hidden">
+          <div class="split">
+            <div>
+              <p class="kicker">BottleMate for Android</p>
+              <h2 id="dl-title">Ready to get started?</h2>
+              <p class="sub">Download the free app to pair your base and see your history. Android 7.0 and newer.</p>
+              <div class="actions" style="margin-top:26px">
+                <a class="btn btn-primary btn-lg" href="downloads/BottleMate-1.0.apk" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 21h14"/></svg>Download APK</a>
+                <span class="mono">v1.0 · Android 7.0+</span>
+              </div>
+              <ol class="steps" style="margin-top:28px">
+                <li style="display:flex;gap:14px;align-items:center"><span class="num">1</span><span>Tap <b>Download APK</b> on your phone.</span></li>
+                <li style="display:flex;gap:14px;align-items:center"><span class="num">2</span><span>Open the file. If Android asks, allow <b>Install unknown apps</b>.</span></li>
+                <li style="display:flex;gap:14px;align-items:center"><span class="num">3</span><span>Tap <b>Install</b>, then open <b>BottleMate</b>.</span></li>
+              </ol>
             </div>
-            <ol class="install">
-              <li>Tap <b>Download APK</b> on your phone.</li>
-              <li>Open the file. If Android asks, allow <b>Install unknown apps</b> for your browser.</li>
-              <li>Tap <b>Install</b>, then open <b>BottleMate</b> from the app drawer.</li>
-            </ol>
-          </div>
-          <div class="dl-side">
-            <div class="qr">
-              <img src="assets/img/qr-apk.svg" width="160" height="160" alt="QR code that opens the BottleMate APK download.">
+            <div style="display:grid;place-items:center;gap:14px;text-align:center">
+              <div class="glass" style="padding:18px;border-radius:26px"><img src="assets/img/qr-apk.svg" width="180" height="180" alt="QR code that downloads the BottleMate app." style="width:180px;image-rendering:pixelated"></div>
+              <p class="muted" style="max-width:24ch;font-size:.92rem">On a computer? Scan with your Android phone's camera.</p>
+              <p class="muted" style="font-size:.85rem">No iPhone app yet. The base works without a phone.</p>
             </div>
-            <p>On a computer? Scan with your phone's camera to download.</p>
-            <div class="dl-phone"><img src="assets/img/splash1.webp" width="780" height="1606" alt="" loading="lazy"></div>
-          </div>
-        </div>
-        <div class="pair reveal">
-          <h3>Pair your base</h3>
-          <ol>
-            <li><span class="no">1</span><div><b>Plug in the base</b><p>Any certified 5 V USB adapter (1 A or more). Place it on a flat, dry surface.</p></div></li>
-            <li><span class="no">2</span><div><b>Hold the knob for 3 s</b><p>The ring shows a blue comet: pairing mode lasts 60 seconds.</p></div></li>
-            <li><span class="no">3</span><div><b>Add device in the app</b><p>Tap <b>Add device → Search for devices</b>, keep the phone within 2 m.</p></div></li>
-            <li><span class="no">4</span><div><b>Calibrate in two steps</b><p>Weigh the empty bottle, then the full one. That's it.</p></div></li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- MANUAL -->
-    <section class="section manual" id="manual">
-      <div class="wrap">
-        <header class="sec-head reveal">
-          <p class="kicker">User manual</p>
-          <h2>Everything in the box, online.</h2>
-          <p class="sub">The same printed guides that come with BottleMate, as PDFs you can read, save or print.</p>
-        </header>
-        <div class="docs">
-          <a class="doc reveal" href="downloads/BottleMate_User_Manual.pdf" target="_blank" rel="noopener">
-            <img src="assets/img/manual_cover.webp" width="800" height="565" alt="" loading="lazy">
-            <div><h3>Full user manual</h3><p>Set-up, pairing, the app, the base's screens, light ring, troubleshooting and specs.</p><span class="mono">PDF · A3 fold-out</span></div>
-          </a>
-          <a class="doc reveal" href="downloads/BottleMate_Pocket_Guide.pdf" target="_blank" rel="noopener">
-            <img src="assets/img/guide_cover.webp" width="800" height="565" alt="" loading="lazy">
-            <div><h3>Pocket quick-start guide</h3><p>The four steps to get going: set up the base, get the app, pair, every day.</p><span class="mono">PDF · A5 pocket guide</span></div>
-          </a>
-          <a class="doc reveal" href="downloads/BottleMate_Warranty_Card.pdf" target="_blank" rel="noopener">
-            <img src="assets/img/warranty_cover.webp" width="800" height="565" alt="" loading="lazy">
-            <div><h3>Warranty card</h3><p>What's covered and how to make a claim.</p><span class="mono">PDF · A6 card</span></div>
-          </a>
-        </div>
-
-        <div class="faq-wrap">
-          <h3 class="faq-title reveal">Troubleshooting</h3>
-          <div class="faq reveal">
-            <details>
-              <summary>The screen is dark</summary>
-              <p>It switched off to save power. Turn or press the knob: the first touch only wakes it. You can change the time in <b>Menu › Display › Screen off</b>.</p>
-            </details>
-            <details>
-              <summary>A sip wasn't counted</summary>
-              <p>Lift the bottle fully off the base for at least 1.5 s, put it back in the middle and let go. Drinks under 25 ml are ignored (<b>Menu › Calibrate › Min sip</b>).</p>
-            </details>
-            <details>
-              <summary>The water level looks wrong</summary>
-              <p>Using a new bottle? Run <b>Menu › Calibrate › Full setup</b>, or <b>Device › Re-calibrate</b> in the app.</p>
-            </details>
-            <details>
-              <summary>The app can't find the base</summary>
-              <p>Hold the knob for 3 s (pairing lasts 60 s). Keep the phone within 2 m, with Bluetooth on and the app allowed to use Nearby devices.</p>
-            </details>
-            <details>
-              <summary>"Scale · check the wiring" or an amber ring</summary>
-              <p>The scale isn't answering. Unplug the base for 10 s and plug it back in. If it stays, <a href="#support">contact support</a>.</p>
-            </details>
-            <details>
-              <summary>Wrong time after a power cut</summary>
-              <p>Open the app (it sets the clock), or use <b>Menu › Clock › Set date/time</b> on the base.</p>
-            </details>
-            <details>
-              <summary>What do the light ring colours mean?</summary>
-              <ul class="ring-legend">
-                <li><i style="--c:linear-gradient(90deg,#9fe6ff,#38c4ff)"></i><b>Aqua sweep</b> starting up</li>
-                <li><i style="--c:linear-gradient(90deg,#9fb4ff,#1F4BFF)"></i><b>Blue comet</b> pairing mode</li>
-                <li><i style="--c:#2F7CF0"></i><b>Two blue heads</b> phone connected</li>
-                <li><i style="--c:#5CC2FF"></i><b>Aqua tide</b> time to drink</li>
-                <li><i style="--c:#38c4ff"></i><b>Ripple + fill</b> sip logged</li>
-                <li><i style="--c:#E9A23B"></i><b>Gold twinkle</b> goal reached</li>
-                <li><i style="--c:#F28C28"></i><b>Amber glow</b> scale problem</li>
-                <li><i style="--c:#FFE7C2"></i><b>Warm-white pulse</b> find my base</li>
-              </ul>
-            </details>
           </div>
         </div>
       </div>
     </section>
 
     <!-- SUPPORT -->
-    <section class="section support dark" id="support">
-      <div class="wrap support-in">
-        <div class="support-copy reveal">
-          <p class="kicker">Customer service</p>
-          <h2>We're here to help.</h2>
-          <p class="sub">Questions about set-up, an order or a warranty claim? Send us a message and we'll reply by email.</p>
-          <div class="email-box">
-            <span class="mono">Email us directly</span>
-            <a class="email" href="mailto:bottlemate.info@gmail.com">bottlemate.info@gmail.com</a>
-            <button class="btn btn-ghost btn-sm" type="button" id="copy-email" data-email="bottlemate.info@gmail.com">Copy address</button>
-            <span class="copied" role="status" aria-live="polite"></span>
+    <section class="section" id="support" aria-labelledby="support-title">
+      <div class="container split" style="align-items:start">
+        <div class="reveal">
+          <p class="kicker">Support</p>
+          <h2 id="support-title">A little help getting set up.</h2>
+          <div class="faq" style="margin-top:26px">
+            <details><summary>How do I set up and calibrate the base?</summary><div>Charge and switch it on: the ring sweeps aqua and the screen says <b>Hello!</b> Press the knob and follow 3 steps: empty base, then empty bottle, then full bottle.</div></details>
+            <details><summary>Does it work with my bottle?</summary><div>Yes: any bottle, flask, tumbler or mug that sits flat on the platform. You calibrate it once with the empty and full bottle.</div></details>
+            <details><summary>Do I need the app or an account?</summary><div>No. The base works fully on its own. The app adds a dashboard, history, the 3D body view, notifications and cloud backup. You can use the app as a guest.</div></details>
+            <details><summary>How do I pair it with my phone?</summary><div>In the app: <b>Device → Add device → Search</b>. On the base, hold the knob for 3 seconds until the ring shows a <b>green comet</b>. Keep the phone within 2 m.</div></details>
+            <details><summary>Why didn't it count my sip?</summary><div>A sip counts when the bottle was lifted for at least 1.5 s and came back at least 25 ml lighter. Put it back in the middle and hold still for a moment.</div></details>
+            <details><summary>Will it nag me all day?</summary><div>No. Every sip pushes the next reminder further away, there are quiet hours at night, a silent mode, and one press of the knob says "On it".</div></details>
+            <details><summary>What happens to my data?</summary><div>As a guest, everything stays on your phone. If you sign in, your data syncs to your own private cloud space and you can delete your account at any time.</div></details>
+            <details><summary>Is there an iPhone app?</summary><div>Not yet. The app is Android only for now; the base works without a phone.</div></details>
           </div>
-          <ul class="support-tips">
-            <li>For a warranty claim, include the <b>serial number</b> from the label under the base.</li>
-            <li>For app problems, say which <b>phone and Android version</b> you use.</li>
-          </ul>
         </div>
-        <form class="contact reveal" id="contact" novalidate>
-          <div class="field">
-            <label for="f-name">Your name</label>
-            <input id="f-name" name="name" type="text" autocomplete="name" required>
+        <div class="glass pad-lg reveal" style="--d:.1s">
+          <h3 style="font-size:1.5rem">Contact customer service</h3>
+          <p class="muted" style="margin:8px 0 6px">We'll reply by email. For a warranty claim, include the serial number from the label under the base.</p>
+          <p style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0 22px"><a href="mailto:bottlemate.info@gmail.com" style="font-weight:800;color:var(--blue);text-decoration:none;font-size:1.1rem">bottlemate.info@gmail.com</a><button class="btn btn-glass btn-sm" type="button" data-copy="bottlemate.info@gmail.com">Copy</button><span class="copied mono" role="status" aria-live="polite"></span></p>
+          <form class="form" id="contact" novalidate>
+            <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" required></div>
+            <div class="field"><label for="f-email">Your email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+            <div class="field"><label for="f-topic">Topic</label><select id="f-topic" name="topic"><option>Set-up and pairing help</option><option>App problem</option><option>Warranty claim</option><option>Order or delivery</option><option>Feedback or idea</option><option>Other</option></select></div>
+            <div class="field"><label for="f-serial">Serial number <span class="muted">(optional)</span></label><input id="f-serial" name="serial" placeholder="Label under the base"></div>
+            <div class="field full"><label for="f-msg">Message</label><textarea id="f-msg" name="message" required></textarea></div>
+            <p class="form-error full" id="form-error" role="alert"></p>
+            <div class="actions full"><button class="btn btn-primary" type="submit" data-via="mail">Send with email app</button><button class="btn btn-glass" type="submit" data-via="gmail">Send with Gmail</button></div>
+            <p class="form-note full">Opens your email with the message filled in. Nothing is sent until you press send there.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUILT BY -->
+    <section class="section" aria-labelledby="story-title">
+      <div class="container">
+        <div class="glass pad-lg split reveal">
+          <figure class="media"><img src="assets/img/build/pcb-etched-finished-boards.webp" alt="Hand-etched BottleMate circuit boards." loading="lazy"></figure>
+          <div>
+            <p class="kicker">The build</p>
+            <h2 id="story-title">Designed and built by Group 05.</h2>
+            <p class="sub">BottleMate began as a university embedded-systems project. An Arduino prototype grew into a standalone base with a hand-etched custom PCB, a 3D-designed enclosure, its own firmware, an Android app, a printed manual and packaging.</p>
           </div>
-          <div class="field">
-            <label for="f-email">Your email</label>
-            <input id="f-email" name="email" type="email" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="f-topic">Topic</label>
-            <select id="f-topic" name="topic">
-              <option>Set-up and pairing help</option>
-              <option>App problem</option>
-              <option>Warranty claim</option>
-              <option>Order or delivery</option>
-              <option>Feedback or idea</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="f-serial">Serial number <span class="opt">(optional)</span></label>
-            <input id="f-serial" name="serial" type="text" placeholder="On the label under the base">
-          </div>
-          <div class="field full">
-            <label for="f-msg">Message</label>
-            <textarea id="f-msg" name="message" rows="5" required></textarea>
-          </div>
-          <p class="form-error full" id="form-error" role="alert"></p>
-          <div class="form-actions full">
-            <button class="btn btn-primary" type="submit" data-via="mail">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="m3 7 9 6 9-6"/></svg>
-              Send with email app
-            </button>
-            <button class="btn btn-ghost" type="submit" data-via="gmail">Send with Gmail</button>
-          </div>
-          <p class="form-note full">This opens your email with the message filled in, addressed to bottlemate.info@gmail.com. Nothing is sent until you press send there.</p>
-        </form>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="wrap foot-in">
-      <div class="foot-brand">
-        <a class="brand" href="#top" aria-label="BottleMate home">
-          <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8c3.2 4 6.4 7.7 6.4 11.4A6.4 6.4 0 0 1 5.6 14.2C5.6 10.5 8.8 6.8 12 2.8z"/></svg></span>
-          <span class="wm">Bottle<span>Mate</span></span>
-        </a>
-        <p>Smart hydration for any bottle.</p>
+    <div class="container glass">
+      <div class="foot">
+        <div>
+          <a class="brand" href="index.html"><img src="assets/logo/bottlemate-icon.svg" alt="" width="36" height="36"><span>Bottle<span>Mate</span></span></a>
+          <p>Smart hydration for any bottle. A wellness aid, not a medical device.</p>
+        </div>
+        <nav class="foot-links" aria-label="Footer">
+          <div><b>Product</b><a href="index.html#how">How it works</a><a href="index.html#base">The base</a><a href="light-ring.html">Light ring</a><a href="app.html">The app</a></div>
+          <div><b>Learn</b><a href="why.html">Why water</a><a href="why.html#evidence">The evidence</a><a href="paperwork.html">Manuals</a></div>
+          <div><b>Help</b><a href="index.html#download">Download</a><a href="index.html#support">Support</a><a href="mailto:bottlemate.info@gmail.com">Email us</a><a href="https://github.com/BottleMate" rel="noopener">GitHub</a></div>
+        </nav>
       </div>
-      <nav class="foot-links" aria-label="Footer">
-        <div><b>Product</b><a href="#how">How it works</a><a href="#app">The app</a><a href="#base">The base</a></div>
-        <div><b>Help</b><a href="#download">Download</a><a href="#manual">User manual</a><a href="#support">Contact</a></div>
-        <div><b>More</b><a href="https://github.com/BottleMate" rel="noopener">GitHub</a><a href="mailto:bottlemate.info@gmail.com">Email</a></div>
-      </nav>
-    </div>
-    <div class="wrap foot-base">
-      <span>© <span id="year">2026</span> BottleMate</span>
-      <span class="mono">Base v2.0 · App 1.0</span>
+      <div class="foot-base"><span>© <span data-year>2026</span> BottleMate</span><span class="mono">bottlemate.info@gmail.com</span></div>
     </div>
   </footer>
 
   <script type="importmap">{ "imports": { "three": "./assets/vendor/three.module.min.js" } }</script>
+  <script src="assets/js/ring.js" defer></script>
   <script src="main.js" defer></script>
-  <script type="module" src="assets/js/base3d.js"></script>
 </body>
 </html>

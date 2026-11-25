@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The light ring: every effect and what it means · BottleMate</title>
+  <meta name="description" content="BottleMate's 12-LED light ring uses one colour per meaning. See every effect animated exactly like the firmware: aqua water, pink time to drink, gold goal, green phone, orange calibrating and more.">
+  <meta name="theme-color" content="#eaf3ff">
+  <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo/bottlemate-icon-512.png">
+  <meta property="og:title" content="The BottleMate light ring">
+  <meta property="og:image" content="https://bottlemate.github.io/assets/logo/social-share-og.jpg">
+  <link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script type="importmap">{ "imports": { "three": "./assets/vendor/three.module.min.js" } }</script>
+  <script>
+    if (location.protocol !== 'file:' && 'IntersectionObserver' in window && 'ResizeObserver' in window &&
+        !matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) {
+      try { const c = document.createElement('canvas'); const gl = c.getContext('webgl2') || c.getContext('webgl');
+        if (gl) { document.documentElement.classList.add('has3d'); gl.getExtension('WEBGL_lose_context')?.loseContext(); } } catch {}
+    }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="page-bg" aria-hidden="true"><img src="assets/img/bg/pair-wide.webp" alt=""></div>
+  <div class="progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <nav class="nav glass" aria-label="Main">
+      <a class="brand" href="index.html"><img src="assets/logo/bottlemate-icon.svg" alt="" width="36" height="36"><span>Bottle<span>Mate</span></span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="why.html">Why water</a>
+        <a href="app.html">The app</a>
+        <a href="light-ring.html" aria-current="page">Light ring</a>
+        <a href="paperwork.html">Manuals</a>
+        <a href="index.html#support">Support</a>
+        <a class="btn btn-primary" href="index.html#download">Get the app</a>
+      </div>
+      <a class="btn btn-primary btn-sm" href="index.html#download">Get the app</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <p class="kicker pill">12 LEDs · one colour per meaning</p>
+          <h1>A light ring<br><span class="grad-text">that talks.</span></h1>
+          <p class="lead">Around the side of the base runs a ring of 12 RGB LEDs. Every colour means one thing, so a glance across the room tells you what BottleMate is saying. No rainbow cycling, ever.</p>
+          <div class="actions"><a class="btn btn-primary" href="#effects">Open the simulator</a></div>
+          <div class="legend" style="margin-top:26px">
+            <span style="--c:var(--led-aqua)"><i></i>Aqua · water</span>
+            <span style="--c:var(--led-pink)"><i></i>Pink · time to drink</span>
+            <span style="--c:var(--led-gold)"><i></i>Gold · goal reached</span>
+            <span style="--c:var(--led-green)"><i></i>Green · phone</span>
+            <span style="--c:var(--led-orange)"><i></i>Orange · calibrating</span>
+            <span style="--c:var(--led-white)"><i></i>Warm white · find my base</span>
+            <span style="--c:var(--led-red)"><i></i>Red · scale problem</span>
+            <span style="--c:var(--led-purple)"><i></i>Purple · demo mode</span>
+          </div>
+        </div>
+        <figure class="media reveal" style="--d:.12s;aspect-ratio:16/10"><img src="assets/img/hero-front-clean.webp" width="1600" height="900" alt="The BottleMate base from the front, its blue light ring glowing around the side under the OLED screen."></figure>
+      </div>
+    </section>
+
+    <!-- EXPLORER -->
+    <section class="section" id="effects" style="padding-top:20px" aria-labelledby="fx-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker">Every effect</p>
+          <h2 id="fx-title">Pick an effect to see it play.</h2>
+          <p class="sub">These animations run the same maths as the base's firmware: the 12 LEDs form two mirrored halves that rise from the front (by the screen) to the back.</p>
+        </header>
+        <div class="split wide-r ring-explorer">
+          <div class="ring-list" role="group" aria-label="Light ring effects" id="fx-list" hidden></div>
+          <div class="ring-preview">
+            <label class="ring-picker" hidden>Light ring effect
+              <select id="fx-picker"></select>
+            </label>
+            <div class="glass-dark ring-stage">
+              <img class="ring-fallback" src="assets/img/hero-front-clean.webp" alt="BottleMate with its aqua light ring lit." width="1600" height="900" loading="lazy" decoding="async">
+              <canvas id="ring-big" role="img" aria-label="Light ring animation"></canvas>
+            </div>
+            <div class="glass card fx-detail">
+              <div aria-live="polite">
+                <p class="kicker" id="fx-kicker">Start-up</p>
+                <h3 id="fx-name">Aqua sweep</h3>
+                <p class="meaning" id="fx-meaning">When BottleMate powers on, aqua light fills both sides from the front to the back, then fades.</p>
+                <dl class="fx-meta">
+                  <div><dt>When</dt><dd id="fx-when">Power on</dd></div>
+                  <div><dt>Pattern</dt><dd id="fx-pattern">Fill · glow · fade</dd></div>
+                  <div><dt>Sound on the base</dt><dd id="fx-sound">None</dd></div>
+                </dl>
+              </div>
+              <div class="ring-controls">
+                <button class="btn btn-glass btn-sm" type="button" id="fx-play" hidden>Pause animation</button>
+                <button class="btn btn-glass btn-sm" type="button" id="fx-replay" hidden>Replay effect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" aria-labelledby="rules-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="kicker">How the ring decides</p>
+          <h2 id="rules-title">Calm by design.</h2>
+        </header>
+        <div class="grid g3">
+          <article class="glass card reveal" data-tilt><span class="ico aqua"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg></span><h3>Mirrored, rising like water</h3><p>Every pattern is drawn on one half and mirrored, so fills, ripples and comets rise up both sides together, from the front to the back.</p></article>
+          <article class="glass card reveal" data-tilt style="--d:.06s"><span class="ico violet"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/></svg></span><h3>One thing at a time</h3><p>Highest priority first: preview, find my base, pairing, a one-off event, a reminder, a scale fault, bottle lifted, then the optional progress glow.</p></article>
+          <article class="glass card reveal" data-tilt style="--d:.12s"><span class="ico gold"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg></span><h3>You set the brightness</h3><p>Off, Low, Medium or High, plus notifications on or off and a progress glow, in Menu › Display or in the app. Quiet hours stay dark.</p></article>
+        </div>
+        <div class="glass card reveal" style="margin-top:22px">
+          <table class="spec">
+            <caption class="sr">Light ring colours and meanings</caption>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-aqua)"><i></i>Aqua</span></span></th><td>Water: start-up sweep, sip ripple and fill, bottle lifted or put back, today's progress glow</td></tr>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-pink)"><i></i>Pink</span></span></th><td>Time to drink (a slow tide)</td></tr>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-deep)"><i></i>Blue → aqua</span></span></th><td>Refill</td></tr>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-gold)"><i></i>Gold</span></span></th><td>Daily goal reached</td></tr>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-green)"><i></i>Green</span></span></th><td>Phone: pairing comet, connected flash</td></tr>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-orange)"><i></i>Orange</span></span></th><td>Calibrating</td></tr>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-white)"><i></i>Warm white</span></span></th><td>Find my base (from the app)</td></tr>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-red)"><i></i>Red</span></span></th><td>A problem: the scale doesn't answer</td></tr>
+            <tr><th scope="row"><span class="legend"><span style="--c:var(--led-purple)"><i></i>Purple</span></span></th><td>Demo mode switched on</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container glass">
+      <div class="foot">
+        <div>
+          <a class="brand" href="index.html"><img src="assets/logo/bottlemate-icon.svg" alt="" width="36" height="36"><span>Bottle<span>Mate</span></span></a>
+          <p>Smart hydration for any bottle. A wellness aid, not a medical device.</p>
+        </div>
+        <nav class="foot-links" aria-label="Footer">
+          <div><b>Product</b><a href="index.html#how">How it works</a><a href="index.html#base">The base</a><a href="light-ring.html">Light ring</a><a href="app.html">The app</a></div>
+          <div><b>Learn</b><a href="why.html">Why water</a><a href="why.html#evidence">The evidence</a><a href="paperwork.html">Manuals</a></div>
+          <div><b>Help</b><a href="index.html#download">Download</a><a href="index.html#support">Support</a><a href="mailto:bottlemate.info@gmail.com">Email us</a><a href="https://github.com/BottleMate" rel="noopener">GitHub</a></div>
+        </nav>
+      </div>
+      <div class="foot-base"><span>© <span data-year>2026</span> BottleMate</span><span class="mono">bottlemate.info@gmail.com</span></div>
+    </div>
+  </footer>
+  <script src="main.js" defer></script>
+  <script src="assets/js/ring.js" defer></script>
+  <script src="assets/js/ring-explorer.js" defer></script>
+</body>
+</html>

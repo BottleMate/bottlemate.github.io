@@ -7,6 +7,7 @@ import { EffectComposer } from '../vendor/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from '../vendor/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from '../vendor/jsm/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from '../vendor/jsm/postprocessing/OutputPass.js';
+const { frame: ringFrame } = window.BottleMateRing;
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const DBG = new URLSearchParams(location.search);
@@ -36,7 +37,7 @@ const loader = new THREE.TextureLoader();
 const OLED = {};
 function oled(name) {
   if (!OLED[name]) {
-    const t = loader.load(`assets/img/oled_${name}.webp`);
+    const t = loader.load(`assets/img/oled/${name}.webp`);
     t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
     OLED[name] = t;
   }
@@ -56,46 +57,30 @@ class RingStrip {
     this.tex.magFilter = THREE.LinearFilter;
     this.out = [0, 0, 0];
   }
-  // w = weights for each light pattern, t = time
-  colour(u, t, w) {
-    const o = this.out; o[0] = o[1] = o[2] = 0;
-    const seg = 0.72 + 0.28 * Math.cos(u * Math.PI * 24) ** 2; // 12 LEDs behind a diffuser
-    if (w.comet) {
-      const d = ((t * 0.16) % 1 - u + 2) % 1;
-      const d2 = ((t * 0.16 + 0.5) % 1 - u + 2) % 1;
-      const v = Math.exp(-d * 7) + Math.exp(-d2 * 7);
-      add(o, C.deep, w.comet * (0.28 + 0.5 * v));
-      add(o, C.aqua, w.comet * 0.55 * v * v);
+  // Light patterns come from the firmware port (ring.js). w = { patternName: weight }, t in seconds.
+  leds(t, w) {
+    const out = Array.from({ length: 12 }, () => [0, 0, 0]);
+    for (const [name, k] of Object.entries(w)) {
+      if (!(k > 0.001)) continue;
+      const fb = ringFrame(name, t * 1000);
+      for (let i = 0; i < 12; i++) { out[i][0] += fb[i][0] * k; out[i][1] += fb[i][1] * k; out[i][2] += fb[i][2] * k; }
     }
-    if (w.tide) {
-      const b = 0.5 + 0.5 * Math.sin(t * 2.4);
-      add(o, C.aqua, w.tide * (0.25 + 0.6 * b));
-    }
-    if (w.faint) add(o, C.aqua, w.faint * 0.16);
-    if (w.ripple) {
-      const dd = Math.min(u, 1 - u) * 2; // 0 at the front panel, 1 at the back
-      const ph = (t * 0.7) % 1.25;
-      const wave = Math.exp(-(((dd - ph) * 7) ** 2));
-      add(o, C.blue, w.ripple * (dd < ph ? 0.5 : 0.08));
-      add(o, C.aqua, w.ripple * 0.9 * wave);
-    }
-    if (w.calm) {
-      const b = 0.5 + 0.5 * Math.sin(t * 1.2 + u * 6.283);
-      add(o, C.blue, w.calm * 0.32);
-      add(o, C.violet, w.calm * 0.22 * b);
-    }
-    if (w.gold) {
-      const k = Math.floor(u * 12);
-      const tw = 0.5 + 0.5 * Math.sin(t * 5 + k * 2.3);
-      add(o, C.gold, w.gold * (0.25 + 0.75 * tw ** 4));
-    }
-    o[0] *= seg; o[1] *= seg; o[2] *= seg;
+    return out;
+  }
+  // u = 0 is the front panel; LED 0 sits just right of it, LED 11 just left (mirrored halves).
+  colour(u, L) {
+    const o = this.out;
+    const x = u * 12 - 0.5, f = x - Math.floor(x);
+    const i0 = ((Math.floor(x) % 12) + 12) % 12, i1 = (i0 + 1) % 12;
+    const seg = 0.75 + 0.25 * Math.cos(f * Math.PI * 2) ** 2;
+    for (let c = 0; c < 3; c++) o[c] = (L[i0][c] * (1 - f) + L[i1][c] * f) * seg * 1.7;
     return o;
   }
   draw(t, w) {
-    const d = this.img.data;
+    const d = this.img.data, L = this.leds(t, w);
+    this.last = L;
     for (let i = 0; i < this.w; i++) {
-      const c = this.colour(i / this.w, t, w);
+      const c = this.colour(i / this.w, L);
       d[i * 4] = clamp(c[0]) * 255; d[i * 4 + 1] = clamp(c[1]) * 255; d[i * 4 + 2] = clamp(c[2]) * 255; d[i * 4 + 3] = 255;
     }
     this.ctx.putImageData(this.img, 0, 0);
@@ -119,7 +104,7 @@ function knurledCylinder(r, h, ridges = 22) {
   return g;
 }
 
-function buildBase({ internals = false } = {}) {
+function buildBase({ internals = false, clear = false } = {}) {
   const root = new THREE.Group();
   const parts = {};
   const shell = new THREE.MeshPhysicalMaterial({ color: 0x0b0f17, roughness: 0.3, metalness: 0.25, clearcoat: 1, clearcoatRoughness: 0.16 });
@@ -149,7 +134,7 @@ function buildBase({ internals = false } = {}) {
     for (let i = 0; i < 12; i++) {
       const m = new THREE.MeshBasicMaterial({ toneMapped: false });
       const led = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.03, 0.035), m);
-      const a = (i / 12) * Math.PI * 2;
+      const a = ((i + 0.5) / 12) * Math.PI * 2;   // same order as the firmware LEDs
       led.position.set(Math.sin(a) * 0.95, 0.182, Math.cos(a) * 0.95);
       led.rotation.y = a; led.userData.u = i / 12;
       ringG.add(led); leds.push(led);
@@ -228,6 +213,8 @@ function buildBase({ internals = false } = {}) {
     transparent: true, depthWrite: false,
   }));
   shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.002;
+  glow.visible = !clear;           // additive glow only reads on a dark stage
+  if (clear) { shadow.material.opacity = 0.38; shadow.scale.setScalar(0.88); bandM.color.setScalar(4.2); }
   root.add(glow, shadow);
 
   root.traverse((o) => {
@@ -256,54 +243,74 @@ function buildBottle() {
 }
 
 // ---------- renderer ----------
+// bg = null renders on a transparent canvas (the device floats on the page, no bloom);
+// a colour renders an opaque "night stage" with bloom so the light ring glows.
 function setup(canvas, bg) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !LOW, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, LOW ? 1.5 : 1.75));
+  const clear = bg === null;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !LOW, alpha: clear, premultipliedAlpha: true,
+    powerPreference: 'high-performance', preserveDrawingBuffer: DBG.has('snap') });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, LOW ? 1.5 : 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = clear ? 1.12 : 1.05;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  if (clear) renderer.setClearColor(0x000000, 0);
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(bg);
+  if (!clear) scene.background = new THREE.Color(bg);
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 60);
 
-  const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(-3, 4, 3);
+  const key = new THREE.DirectionalLight(0xffffff, clear ? 2.2 : 1.6); key.position.set(-3, 4, 3);
   const rim = new THREE.DirectionalLight(0x5cc2ff, 3); rim.position.set(2.5, 2, -4);
-  const fill = new THREE.DirectionalLight(0x8b7cff, 0.9); fill.position.set(4, 1, 2);
+  const fill = new THREE.DirectionalLight(clear ? 0xdde9ff : 0x8b7cff, clear ? 1.2 : 0.9); fill.position.set(4, 1, 2);
   const follow = new THREE.PointLight(0x7fd4ff, 5, 5, 1.6); follow.position.set(0, 1.4, 2);
   scene.add(key, rim, fill, follow);
 
-  const composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.6, 0.45, 1.0);
-  if (!DBG.has('nobloom')) composer.addPass(bloom);
-  composer.addPass(new OutputPass());
-
+  let composer = null, bloom = null;
+  if (!clear) {
+    composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.75, 0.5, 0.95);
+    if (!DBG.has('nobloom')) composer.addPass(bloom);
+    composer.addPass(new OutputPass());
+  }
   const resize = () => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
     renderer.setSize(w, h, false);
-    composer.setSize(w, h);
-    bloom.resolution.set(w * (LOW ? 0.5 : 0.75), h * (LOW ? 0.5 : 0.75));
+    if (composer) { composer.setSize(w, h); bloom.resolution.set(w * (LOW ? 0.5 : 0.75), h * (LOW ? 0.5 : 0.75)); }
     camera.aspect = w / h; camera.updateProjectionMatrix();
   };
   new ResizeObserver(resize).observe(canvas);
   resize();
-  return { renderer, scene, camera, composer, follow };
+  const render = (dt) => (composer ? composer.render(dt) : renderer.render(scene, camera));
+  if (DBG.has('snap')) (window.__bmSnap ||= []).push(() => canvas.toDataURL('image/png'));
+  return { renderer, scene, camera, composer: { render }, follow };
 }
 
 // Runs fn(dt, t) every frame while el is on screen.
 function loop(el, fn) {
   let on = false, raf = 0, last = performance.now(), t = 0;
   const tick = (now) => {
-    const dt = Math.min(0.05, (now - last) / 1000); last = now; t += dt;
-    fn(dt, t);
-    raf = on && !document.hidden ? requestAnimationFrame(tick) : 0;
+    if (now - last >= (LOW ? 31 : 15)) {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      t += dt;
+      fn(dt, t);
+    }
+    raf = requestAnimationFrame(tick);
   };
-  const start = () => { if (!raf && on && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(tick); } };
-  new IntersectionObserver(([e]) => { on = e.isIntersecting; start(); }, { rootMargin: '120px' }).observe(el);
-  document.addEventListener('visibilitychange', start);
+  const sync = () => {
+    if (!on || document.hidden) {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    } else if (!raf) {
+      last = performance.now();
+      raf = requestAnimationFrame(tick);
+    }
+  };
+  new IntersectionObserver(([e]) => { on = e.isIntersecting; sync(); }).observe(el);
+  document.addEventListener('visibilitychange', sync);
 }
 
 // Pointer (-1..1 in the element) + horizontal drag to spin.
@@ -324,13 +331,13 @@ function pointerInput(el, canvas) {
 }
 
 // ---------- hero ----------
-function initHero() {
-  const vis = document.querySelector('.hero-visual');
+export function initHero() {
+  const vis = document.getElementById('hero-stage');
   const canvas = document.getElementById('hero3d');
-  const hero = document.querySelector('.hero');
+  const hero = document.querySelector('.hero.pin') || vis;
   if (!vis || !canvas) return;
-  const { scene, camera, composer, follow } = setup(canvas, 0x071630);
-  const base = buildBase();
+  const { scene, camera, composer, follow } = setup(canvas, null);
+  const base = buildBase({ clear: true });
   const bottle = buildBottle();
   scene.add(base.root);
   base.root.add(bottle.group);
@@ -341,7 +348,7 @@ function initHero() {
   const ptr = pointerInput(vis, canvas);
   const cur = { yaw: -0.5, pitch: 0.36, lift: 0, level: 0.72, px: 0, py: 0 };
   let step = -1;
-  const wide = matchMedia('(min-width: 900px)');
+  const wide = matchMedia('(min-width: 981px) and (min-height: 680px)');
   const sticky = () => wide.matches;
 
   const progress = () => {
@@ -374,14 +381,12 @@ function initHero() {
     bottle.group.rotation.set(L * 0.1, 0, -L * 0.32);
 
     const w = {
-      comet: 1 - smooth(0.1, 0.16, p),
-      tide: smooth(0.12, 0.16, p) * (1 - smooth(0.32, 0.36, p)),
-      faint: smooth(0.32, 0.36, p) * (1 - smooth(0.54, 0.58, p)),
-      ripple: smooth(0.54, 0.58, p) * (1 - smooth(0.76, 0.8, p)),
-      calm: smooth(0.76, 0.82, p),
+      ambient: 1 - smooth(0.1, 0.16, p) + smooth(0.76, 0.82, p),
+      alert: smooth(0.12, 0.16, p) * (1 - smooth(0.32, 0.36, p)),
+      lift: smooth(0.32, 0.36, p) * (1 - smooth(0.54, 0.58, p)),
+      sip: smooth(0.54, 0.58, p) * (1 - smooth(0.76, 0.8, p)),
     };
     base.strip.draw(t, w);
-    base.glow.material.opacity = 0.55 + 0.25 * (w.tide * Math.sin(t * 2.4) + w.ripple);
 
     // camera: scroll orbit + pointer tilt + drag spin
     ptr.drag += ptr.vel; ptr.vel *= ptr.down ? 0.5 : 0.94;
@@ -406,12 +411,12 @@ function initHero() {
 }
 
 // ---------- exploded view ----------
-function initExploded() {
-  const wrap = document.querySelector('.base-3d');
+export function initExploded() {
+  const wrap = document.getElementById('base-stage');
   const canvas = document.getElementById('base3d');
   if (!wrap || !canvas) return;
-  const { scene, camera, composer, follow } = setup(canvas, 0x061226);
-  const base = buildBase({ internals: true });
+  const { scene, camera, composer, follow } = setup(canvas, null);
+  const base = buildBase({ internals: true, clear: true });
   scene.add(base.root);
   base.oledM.map = oled('home');
   const labels = [...wrap.querySelectorAll('.part-label')].map((el) => ({ el, part: base.parts[el.dataset.part], side: el.dataset.side === 'l' ? -1 : 1 }));
@@ -428,10 +433,10 @@ function initExploded() {
     cur.e += (e - cur.e) * k;
     base.order.forEach(([, g], i) => { g.position.y = cur.e * i * STEP; });
 
-    base.strip.draw(t, { calm: 1 - cur.e * 0.4, comet: cur.e * 0.8 });
-    base.leds.forEach((led) => {
-      const c = base.strip.colour(led.userData.u, t, { comet: 1 });
-      led.material.color.setRGB(c[0] * 3, c[1] * 3, c[2] * 3);
+    base.strip.draw(t, { ambient: 1 - cur.e, boot: cur.e });
+    base.leds.forEach((led, i) => {
+      const L = base.strip.last[i];   // LED i of the firmware frame
+      led.material.color.setRGB(L[0] * 3.5, L[1] * 3.5, L[2] * 3.5);
     });
 
     ptr.drag += ptr.vel; ptr.vel *= ptr.down ? 0.5 : 0.94;
@@ -466,12 +471,47 @@ function initExploded() {
   wrap.classList.add('ready');
 }
 
-function supportsWebGL() {
-  try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; }
+// ---------- light ring showcase ----------
+// The real base on a dark stage, its ring playing one firmware pattern; the floor glow takes the ring's colour.
+// Returns the same controls as the 2D RingView: set(id), setPlaying(bool), playing.
+export function initRing(canvas, { compact = false } = {}) {
+  const stage = canvas.parentElement;
+  const { scene, camera, composer, follow } = setup(canvas, 0x070f1f);
+  const base = buildBase();
+  scene.add(base.root);
+  base.oledM.map = oled('home');
+  const ptr = pointerInput(stage, canvas);
+  const api = { fx: 'boot', t0: 0, clock: 0, playing: !reduce, ctx: true };
+  api.set = (id) => { api.fx = id; api.t0 = api.clock; if (id === 'alert') base.oledM.map = oled('home_alert'); else if (id === 'sip') base.oledM.map = oled('sip'); else if (id === 'lift') base.oledM.map = oled('lift'); else base.oledM.map = oled('home'); };
+  api.setPlaying = (on) => { api.playing = on; };
+  const cur = { yaw: 0.35, px: 0, py: 0 };
+  const avg = new THREE.Color();
+  let spin = 0;
+  loop(stage, (dt) => {
+    if (api.playing) api.clock += dt;
+    const t = api.clock - api.t0;
+    base.strip.draw(t, { [api.fx]: 1 });
+    // floor glow follows the light
+    const L = base.strip.last; let r = 0, g = 0, b = 0;
+    for (const l of L) { r += l[0]; g += l[1]; b += l[2]; }
+    const m = Math.max(r, g, b, 1e-4);
+    avg.setRGB(r / m, g / m, b / m);
+    base.glow.material.color.copy(avg);
+    base.glow.material.opacity = Math.min(1, m / 4);
+    const k = 1 - Math.exp(-dt * 4);
+    ptr.drag += ptr.vel; ptr.vel *= ptr.down ? 0.5 : 0.94;
+    if (api.playing && !reduce) spin += dt * 0.12;
+    cur.px += (ptr.x - cur.px) * k; cur.py += (ptr.y - cur.py) * k;
+    const yaw = 0.35 + Math.sin(spin) * 0.55 + cur.px * 0.3 + ptr.drag;
+    cur.yaw += (yaw - cur.yaw) * k;
+    const pitch = 0.2 - cur.py * 0.08;
+    const dist = compact ? 3.5 : 3.9;
+    const ty = 0.22;
+    camera.position.set(dist * Math.cos(pitch) * Math.sin(cur.yaw), ty + dist * Math.sin(pitch), dist * Math.cos(pitch) * Math.cos(cur.yaw));
+    camera.lookAt(0, ty, 0);
+    follow.position.set(Math.sin(cur.yaw) * 2.4, 1.6, Math.cos(cur.yaw) * 2.4);
+    composer.render(dt);
+  });
+  stage.classList.add('ready', 'ring-ready');
+  return api;
 }
-
-if (!reduce && supportsWebGL()) {
-  try { initHero(); } catch (err) { console.warn('3D hero unavailable', err); document.documentElement.classList.remove('has3d'); }
-  try { initExploded(); } catch (err) { console.warn('3D exploded view unavailable', err); }
-}
-
