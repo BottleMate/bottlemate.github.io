@@ -609,3 +609,23 @@ h3 { font-size: 1.22rem; font-weight: 800; letter-spacing: -.02em; line-height: 
   .tour-bar { display: none; }
 }
 @media print { .tour-btn, .tour-hud { display: none !important; } }
+
+/* presentation speed selector */
+.tour-dock { position: fixed; right: 20px; bottom: 20px; z-index: 70; display: flex; align-items: center; gap: 10px; }
+.tour-dock .tour-btn { position: static; }
+.tour-speed { display: inline-flex; align-items: center; gap: 2px; padding: 5px; border-radius: 100px; font: 800 .8rem/1 Manrope, system-ui, sans-serif; }
+.tour-speed > span { padding: 0 8px 0 10px; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--soft); }
+.tour-speed button { min-width: 40px; min-height: 36px; padding: 0 8px; border: 0; border-radius: 100px; background: transparent; color: var(--ink-2); font: inherit; cursor: pointer; transition: background .2s, color .2s; }
+.tour-speed button:hover { background: rgba(255,255,255,.7); color: var(--blue); }
+.tour-speed button[aria-checked="true"] { color: #fff; background: linear-gradient(150deg, #4c7cec, #2756cc); box-shadow: 0 6px 14px rgba(39,86,204,.3); }
+.tour-hud { left: 24px; transform: none; max-width: calc(100vw - 560px); }
+@media (max-width: 900px) {
+  .tour-speed > span { display: none; }
+  .tour-speed button { min-width: 34px; padding: 0 6px; }
+  .tour-hud { max-width: calc(100vw - 48px); bottom: 84px; }
+}
+@media (max-width: 640px) { .tour-speed { display: none; } .tour-hud { bottom: 84px; left: 14px; } }
+@media print { .tour-dock { display: none !important; } }
+/* while touring, reveal animations keep up with faster scrolling */
+.touring .words .w > span { transition-duration: .45s; transition-delay: calc(var(--i) * 22ms); }
+.touring .reveal, .touring .reveal-img { transition-duration: .45s; transition-delay: 0s; }

@@ -8,7 +8,11 @@
   const PAGES = ['index.html', 'why.html', 'app.html', 'light-ring.html', 'paperwork.html'];
   const NAMES = { 'index.html': 'Home', 'why.html': 'Why water', 'app.html': 'The app', 'light-ring.html': 'Light ring', 'paperwork.html': 'Manuals' };
   const RESUME_MS = 30000;
-  const SPEED = Math.max(1, +new URLSearchParams(location.search).get('tourspeed') || 1);   // testing only
+  // Speed: chosen in the speed selector and remembered; ?tourspeed=N overrides it (testing).
+  const SPEEDS = [1, 1.5, 2, 3, 4];
+  const urlSpeed = +new URLSearchParams(location.search).get('tourspeed') || 0;
+  const saved = (() => { try { return +localStorage.getItem('bm-tour-speed') || 0; } catch { return 0; } })();
+  let SPEED = urlSpeed || (SPEEDS.includes(saved) ? saved : 2);
   const here = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
   const page = PAGES.includes(here) ? here : 'index.html';
   const next = PAGES[(PAGES.indexOf(page) + 1) % PAGES.length];
@@ -33,7 +37,35 @@
   hud.setAttribute('role', 'status');
   hud.setAttribute('aria-live', 'polite');
   hud.innerHTML = '<i class="tour-dot"></i><span class="tour-text"></span><span class="tour-bar"><b></b></span>';
-  document.body.append(btn, hud);
+  const dock = document.createElement('div');
+  dock.className = 'tour-dock';
+  const speeds = document.createElement('div');
+  speeds.className = 'tour-speed glass';
+  speeds.setAttribute('role', 'radiogroup');
+  speeds.setAttribute('aria-label', 'Presentation speed');
+  speeds.innerHTML = '<span aria-hidden="true">Speed</span>' + SPEEDS.map((v) => `<button type="button" role="radio" data-speed="${v}">${v}×</button>`).join('');
+  dock.append(speeds, btn);
+  document.body.append(dock, hud);
+  const paintSpeed = () => $$('[data-speed]', speeds).forEach((b) => {
+    const on = +b.dataset.speed === SPEED;
+    b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1;
+  });
+  paintSpeed();
+  speeds.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-speed]');
+    if (!b) return;
+    e.stopPropagation();
+    SPEED = +b.dataset.speed;                 // takes effect immediately, even mid-tour
+    try { localStorage.setItem('bm-tour-speed', String(SPEED)); } catch {}
+    paintSpeed();
+  });
+  speeds.addEventListener('keydown', (e) => {
+    const k = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[e.key];
+    if (!k) return;
+    e.preventDefault(); e.stopPropagation();
+    const i = Math.min(SPEEDS.length - 1, Math.max(0, SPEEDS.indexOf(SPEED) + k));
+    $$('[data-speed]', speeds)[i].click(); $$('[data-speed]', speeds)[i].focus();
+  });
   const hudText = $('.tour-text', hud), hudBar = $('.tour-bar b', hud);
 
   const paint = (text) => {
@@ -197,7 +229,7 @@
       progress(1);
       paint(`Next: ${NAMES[next]}`);
       await sleep(1500, id);
-      location.href = `${next}?tour${SPEED > 1 ? `&tourspeed=${SPEED}` : ''}`;
+      location.href = `${next}?tour${urlSpeed ? `&tourspeed=${urlSpeed}` : ''}`;
     } catch (e) {
       if (!(e instanceof Stop)) console.warn('tour step failed', e);
     }
@@ -222,10 +254,10 @@
   btn.addEventListener('click', (e) => { e.stopPropagation(); if (state === 'off') run(); else stop(); });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && state !== 'off') { stop(); return; }
-    if (state !== 'off' && !e.repeat) pause();
+    if (state !== 'off' && !e.repeat && !dock.contains(e.target)) pause();
   });
   // A visitor taking over pauses the tour (programmatic scrolls and clicks don't trigger these).
-  const takeover = (e) => { if (state !== 'off' && !btn.contains(e.target)) pause(); };
+  const takeover = (e) => { if (state !== 'off' && !dock.contains(e.target)) pause(); };
   ['pointerdown', 'wheel', 'touchstart'].forEach((t) => addEventListener(t, takeover, { passive: true, capture: true }));
   document.addEventListener('visibilitychange', () => { if (!document.hidden && state === 'running') keepAwake(); });
 
