@@ -477,11 +477,13 @@ export function initExploded() {
 // Returns the same controls as the 2D RingView: set(id), setPlaying(bool), playing.
 export function initRing(canvas, { compact = false } = {}) {
   const stage = canvas.parentElement;
-  const { scene, camera, composer, follow } = setup(canvas, 0x070f1f);
-  const base = buildBase();
+  // Light stage: transparent canvas; the CSS glow behind the base takes the ring's colour.
+  const { scene, camera, composer, follow } = setup(canvas, null);
+  const base = buildBase({ clear: true });
   scene.add(base.root);
   base.oledM.map = oled('home');
   const ptr = pointerInput(stage, canvas);
+  let glowTick = 0;
   const api = { fx: 'boot', t0: 0, clock: 0, playing: !reduce, ctx: true };
   api.set = (id) => { api.fx = id; api.t0 = api.clock; if (id === 'alert') base.oledM.map = oled('home_alert'); else if (id === 'sip') base.oledM.map = oled('sip'); else if (id === 'lift') base.oledM.map = oled('lift'); else base.oledM.map = oled('home'); };
   api.setPlaying = (on) => { api.playing = on; };
@@ -497,8 +499,11 @@ export function initRing(canvas, { compact = false } = {}) {
     for (const l of L) { r += l[0]; g += l[1]; b += l[2]; }
     const m = Math.max(r, g, b, 1e-4);
     avg.setRGB(r / m, g / m, b / m);
-    base.glow.material.color.copy(avg);
-    base.glow.material.opacity = Math.min(1, m / 4);
+    if ((glowTick += dt) > 0.05) {   // ~20 updates/s is plenty for a soft glow
+      glowTick = 0;
+      stage.style.setProperty('--ring-rgb', `${Math.round(avg.r * 255)}, ${Math.round(avg.g * 255)}, ${Math.round(avg.b * 255)}`);
+      stage.style.setProperty('--ring-k', Math.min(1, m / 3).toFixed(3));
+    }
     const k = 1 - Math.exp(-dt * 4);
     ptr.drag += ptr.vel; ptr.vel *= ptr.down ? 0.5 : 0.94;
     if (api.playing && !reduce) spin += dt * 0.12;

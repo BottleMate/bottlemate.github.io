@@ -572,3 +572,17 @@ h3 { font-size: 1.22rem; font-weight: 800; letter-spacing: -.02em; line-height: 
 @media (prefers-reduced-motion: reduce) { .box-float img { animation: none; } }
 @media (min-width: 981px) { .cine.full video { transform: translateX(22%); } }
 .page-plain .nav.glass { background: linear-gradient(150deg, rgba(255,255,255,.86), rgba(240,246,255,.74)); }
+
+/* ---------- v5: light-ring stage on a light background ---------- */
+.ring-stage.light { background: radial-gradient(90% 80% at 50% 30%, rgba(255,255,255,.9) 0%, rgba(240,246,255,.75) 55%, rgba(224,236,252,.8) 100%);
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 rgba(255,255,255,.5), 0 30px 70px -30px rgba(20,60,130,.35); }
+.ring-stage.light::before { content: ''; position: absolute; left: 12%; right: 12%; top: 34%; bottom: 10%; z-index: 0; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(var(--ring-rgb, 0, 179, 255), calc(.55 * var(--ring-k, .4))), rgba(var(--ring-rgb, 0, 179, 255), calc(.18 * var(--ring-k, .4))) 55%, transparent 78%);
+  filter: blur(18px); transition: background .2s linear; }
+.ring-stage.light canvas { z-index: 1; }
+.ring-stage.light::after { background: linear-gradient(170deg, rgba(255,255,255,.55), transparent 30%); }
+.ring-stage.light .ring-label { color: var(--ink); background: rgba(255,255,255,.75); border: 1px solid #fff; box-shadow: 0 8px 22px -10px rgba(20,60,130,.35); }
+.ring-stage.light .ring-fallback { object-fit: cover; }
+.ring-stage.light::before { -webkit-mask: none; mask: none; padding: 0; z-index: 0; }
+.ring-stage.light::before { left: 6%; right: 6%; top: 40%; bottom: 4%;
+  background: radial-gradient(closest-side, rgba(var(--ring-rgb, 0, 179, 255), calc(.95 * var(--ring-k, .4))), rgba(var(--ring-rgb, 0, 179, 255), calc(.35 * var(--ring-k, .4))) 50%, transparent 80%); filter: blur(22px); }
