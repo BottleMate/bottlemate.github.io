@@ -51,7 +51,7 @@
   window.loadBM3D = () => (window.__bm3d ||= new Promise((resolve, reject) => {
     if (window.BM3D) { resolve(window.BM3D); return; }
     const sc = document.createElement('script');
-    sc.src = 'assets/js/bm3d.js';
+    sc.src = 'assets/js/bm3d.js?v=20261125b';
     sc.onload = () => (window.BM3D ? resolve(window.BM3D) : reject(new Error('3D bundle missing')));
     sc.onerror = reject;
     document.head.append(sc);
