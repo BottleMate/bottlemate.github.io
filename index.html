@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <script>(function(){var d=document.documentElement;d.classList.add("js");try{var c=document.createElement("canvas");if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&(c.getContext("webgl2")||c.getContext("webgl")))d.classList.add("has3d")}catch(e){}})();</script>
   <a class="skip" href="#main">Skip to content</a>
 
   <header class="nav" id="top">
@@ -42,50 +43,58 @@
   <main id="main">
     <!-- HERO -->
     <section class="hero">
-      <div class="hero-bg" aria-hidden="true"></div>
-      <div class="wrap hero-in">
-        <div class="hero-copy reveal">
-          <p class="kicker">Smart base v2.0 · Android app 1.0</p>
-          <h1>Every sip,<br>counted.</h1>
-          <p class="lead">The smart base for the bottle you already own. It notices every sip and reminds you to drink at a pace that fits your day.</p>
-          <div class="cta-row">
-            <a class="btn btn-primary" href="#download">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
-              Download for Android
-            </a>
-            <a class="btn btn-ghost" href="#manual">Read the manual</a>
+      <div class="hero-stage">
+        <div class="hero-bg" aria-hidden="true"><span class="aurora a1"></span><span class="aurora a2"></span><span class="aurora a3"></span></div>
+        <div class="wrap hero-in">
+          <div class="hero-copy reveal">
+            <p class="kicker">Smart base v2.0 · Android app 1.0</p>
+            <h1>Every sip,<br><span class="grad">counted.</span></h1>
+            <p class="lead">The smart base for the bottle you already own. It notices every sip and reminds you to drink at a pace that fits your day.</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#download">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
+                Download for Android
+              </a>
+              <a class="btn btn-ghost" href="#manual">Read the manual</a>
+            </div>
+            <ul class="hero-points">
+              <li><b>Any bottle</b> up to 5 kg</li>
+              <li><b>Sips from 25 ml</b> logged automatically</li>
+              <li><b>Works offline</b>, stores 500 sips</li>
+            </ul>
           </div>
-          <ul class="hero-points">
-            <li><b>Any bottle</b> up to 5 kg</li>
-            <li><b>Sips from 25 ml</b> logged automatically</li>
-            <li><b>Works offline</b>, stores 500 sips</li>
-          </ul>
+          <div class="hero-visual" data-step="0">
+            <img class="hero-fallback" src="assets/img/anatomy.webp" width="1520" height="840" alt="The BottleMate base: a round black puck with a rotary knob on top, a small OLED screen showing 43 minutes to the next sip, and a blue light ring around its side." fetchpriority="high">
+            <canvas id="hero3d" aria-hidden="true"></canvas>
+            <ol class="story" aria-hidden="true">
+              <li><span>01</span>Next sip in 43 min</li>
+              <li><span>02</span>Time to drink: 220 ml</li>
+              <li><span>03</span>Bottle lifted, timer paused</li>
+              <li><span>04</span>+180 ml logged</li>
+              <li><span>05</span>Nice sip! Next one re-planned</li>
+            </ol>
+            <p class="hint" aria-hidden="true"><span class="hint-drag">Drag to rotate</span><span class="hint-scroll">Scroll to take a sip</span></p>
+          </div>
         </div>
-        <figure class="hero-media reveal">
-          <img src="assets/img/anatomy.webp" width="1520" height="840" alt="The BottleMate base: a round black puck with a rotary knob on top, a small OLED screen showing 43 minutes to the next sip, and a blue light ring around its side." fetchpriority="high">
-          <div class="hero-phone">
-            <img src="assets/img/home.webp" width="780" height="1606" alt="The BottleMate app home screen with today's progress ring and the next-sip countdown.">
-          </div>
-        </figure>
+        <div class="ring-line" aria-hidden="true"></div>
       </div>
-      <div class="ring-line" aria-hidden="true"></div>
     </section>
 
     <!-- 3 PROMISES -->
     <section class="promises" aria-label="What BottleMate does">
       <div class="wrap grid3">
         <article class="promise reveal">
-          <span class="p-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8c3.2 4 6.4 7.7 6.4 11.4A6.4 6.4 0 0 1 5.6 14.2C5.6 10.5 8.8 6.8 12 2.8z"/></svg></span>
+          <span class="p-icon c-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8c3.2 4 6.4 7.7 6.4 11.4A6.4 6.4 0 0 1 5.6 14.2C5.6 10.5 8.8 6.8 12 2.8z"/></svg></span>
           <h3>Counts every sip</h3>
           <p>A precision scale under your bottle weighs each drink to about 1 g. No buttons to press, nothing to type.</p>
         </article>
         <article class="promise reveal">
-          <span class="p-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span>
+          <span class="p-icon c-violet" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span>
           <h3>Reminds at your pace</h3>
           <p>The light ring and a soft chime tell you when it's time to drink. Drink on your own and the reminder waits.</p>
         </article>
         <article class="promise reveal">
-          <span class="p-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 12 6l7 6.5M7 11v8h10v-8"/><path d="M10 19v-4h4v4"/></svg></span>
+          <span class="p-icon c-teal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 12 6l7 6.5M7 11v8h10v-8"/><path d="M10 19v-4h4v4"/></svg></span>
           <h3>Works without a phone</h3>
           <p>The base runs on its own and keeps 500 sips. The app adds history, a 3D body view and cloud backup.</p>
         </article>
@@ -183,8 +192,19 @@
           <p class="sub">A load cell, an ESP32-C3, a 12-LED colour ring and a screen you control with one knob.</p>
         </header>
         <div class="base-grid">
-          <figure class="base-img reveal">
-            <img src="assets/img/exploded.webp" width="1600" height="900" alt="Exploded view of the BottleMate base showing the top plate, knob, circuit board, light ring, load cell and bottom shell." loading="lazy">
+          <figure class="base-img base-3d reveal">
+            <img class="base-fallback" src="assets/img/exploded.webp" width="1600" height="900" alt="Exploded view of the BottleMate base showing the top plate, knob, circuit board, light ring, load cell and bottom shell." loading="lazy">
+            <canvas id="base3d" aria-hidden="true"></canvas>
+            <div class="part-labels" aria-hidden="true">
+              <span class="part-label" data-part="knob" data-side="l">Rotary knob with push</span>
+              <span class="part-label" data-part="plate" data-side="r">Top plate on the scale</span>
+              <span class="part-label" data-part="upper" data-side="l">Shell with 128×64 OLED</span>
+              <span class="part-label" data-part="ring" data-side="r">12-LED colour ring</span>
+              <span class="part-label" data-part="pcb" data-side="l">ESP32-C3 · BLE + Wi-Fi</span>
+              <span class="part-label" data-part="cell" data-side="r">Load cell, about 1 g</span>
+              <span class="part-label" data-part="bottom" data-side="l">Base · 5 V USB-C</span>
+            </div>
+            <figcaption class="hint">Scroll to open it up · drag to rotate</figcaption>
           </figure>
           <dl class="specs reveal">
             <div><dt>Radio</dt><dd>ESP32-C3 · Bluetooth LE · 2.4 GHz Wi-Fi</dd></div>
@@ -219,7 +239,7 @@
                 <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></svg>
                 Download APK
               </a>
-              <span class="meta mono">v1.0 · 9.1 MB · Android 7.0+</span>
+              <span class="meta mono">v1.0 · Android 7.0+</span>
             </div>
             <ol class="install">
               <li>Tap <b>Download APK</b> on your phone.</li>
@@ -258,15 +278,15 @@
         <div class="docs">
           <a class="doc reveal" href="downloads/BottleMate_User_Manual.pdf" target="_blank" rel="noopener">
             <img src="assets/img/manual_cover.webp" width="800" height="565" alt="" loading="lazy">
-            <div><h3>Full user manual</h3><p>Set-up, pairing, the app, the base's screens, light ring, troubleshooting and specs.</p><span class="mono">PDF · A3 fold-out · 7 MB</span></div>
+            <div><h3>Full user manual</h3><p>Set-up, pairing, the app, the base's screens, light ring, troubleshooting and specs.</p><span class="mono">PDF · A3 fold-out</span></div>
           </a>
           <a class="doc reveal" href="downloads/BottleMate_Pocket_Guide.pdf" target="_blank" rel="noopener">
             <img src="assets/img/guide_cover.webp" width="800" height="565" alt="" loading="lazy">
-            <div><h3>Pocket quick-start guide</h3><p>The four steps to get going: set up the base, get the app, pair, every day.</p><span class="mono">PDF · A5 · 4.2 MB</span></div>
+            <div><h3>Pocket quick-start guide</h3><p>The four steps to get going: set up the base, get the app, pair, every day.</p><span class="mono">PDF · A5 pocket guide</span></div>
           </a>
           <a class="doc reveal" href="downloads/BottleMate_Warranty_Card.pdf" target="_blank" rel="noopener">
             <img src="assets/img/warranty_cover.webp" width="800" height="565" alt="" loading="lazy">
-            <div><h3>Warranty card</h3><p>What's covered and how to make a claim.</p><span class="mono">PDF · A6 · 0.4 MB</span></div>
+            <div><h3>Warranty card</h3><p>What's covered and how to make a claim.</p><span class="mono">PDF · A6 card</span></div>
           </a>
         </div>
 
@@ -396,6 +416,8 @@
     </div>
   </footer>
 
+  <script type="importmap">{ "imports": { "three": "./assets/vendor/three.module.min.js" } }</script>
   <script src="main.js" defer></script>
+  <script type="module" src="assets/js/base3d.js"></script>
 </body>
 </html>

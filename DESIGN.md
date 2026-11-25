@@ -16,7 +16,13 @@ The direction is taken from BottleMate's own printed manual, pocket guide and bo
 | `--mist` | `#EEF5FD` | Tinted light sections |
 | `--paper` | `#FBFDFF` | Page background |
 | `--line` | `#DCE5F1` | Borders, rules on light |
-| `--gold` | `#E9A23B` | "Goal reached" / warnings only |
+| `--gold` | `#F5B544` | "Goal reached", step 4 accents |
+| `--violet` | `#8B7CFF` | Secondary accent: gradients, glows, step 3 |
+| `--indigo` | `#5B6CFF` | End of the primary button gradient |
+| `--aqua` / `--teal` | `#22D3EE` / `#2DD4BF` | Light-ring accents, step 2, icon tiles |
+| `--pink` | `#FF7AB6` | Small highlights only (dots, the end of the hero gradient) |
+
+Gradients: `--grad` (sky → aqua → violet → pink) for the hero word "counted.", gradient borders and the footer line; `--grad-btn` (blue → indigo) for primary buttons. Colour is used as light (glows, dots, borders), never as large flat fills on light sections.
 
 Text on dark uses `#FFFFFF` for headings, `#B9C8DE` for body (≥ 7:1 on `--night`).
 
@@ -42,9 +48,13 @@ Logo tile: rounded square, `linear-gradient(180deg, #5CC2FF, #2F7CF0)`, white ou
 - **OLED tiles:** the base's real 128×64 screen renders on black, 14 px radius.
 - **Light-ring line:** a thin sky→blue gradient bar used as a section divider, echoing the base's LED ring.
 
-## Motion
+## Motion and 3D
 
-Short fade-up reveals (300 ms) on scroll, off under `prefers-reduced-motion`.
+- Short fade-up reveals on scroll.
+- **Hero 3D** (`assets/js/base3d.js`, three.js r160): the base is modelled in code from the product renders. On wide screens the hero pins for 260vh and scrolling plays a sip: next sip → drink now → lifted → +180 ml → nice sip, with the real OLED screens and light-ring patterns. Pointer tilts the camera, drag spins it.
+- **Exploded view** in The base: the layers separate as the section scrolls past, with labels.
+- Cards tilt toward the cursor and a soft light follows the cursor on dark sections (fine pointers only).
+- `prefers-reduced-motion` turns all of it off and shows the static renders.
 
 ## Theme
 

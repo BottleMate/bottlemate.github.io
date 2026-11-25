@@ -125,4 +125,38 @@
   });
 
   $('#year').textContent = new Date().getFullYear();
+
+  /* Pointer effects: 3D tilt on cards, a soft light following the cursor on dark sections */
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (finePointer && !calm) {
+    $$('.promise, .doc, .app .phone, .science, .pair li').forEach((el) => {
+      el.setAttribute('data-tilt', '');
+      const max = el.classList.contains('phone') ? 10 : el.classList.contains('science') ? 3 : 7;
+      let raf = 0;
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          el.classList.add('tilting');
+          el.style.transform = `perspective(900px) rotateX(${(0.5 - y) * max}deg) rotateY(${(x - 0.5) * max}deg) translateZ(0)`;
+          el.style.setProperty('--gx', `${x * 100}%`);
+          el.style.setProperty('--gy', `${y * 100}%`);
+        });
+      });
+      el.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(raf);
+        el.classList.remove('tilting');
+        el.style.transform = '';
+      });
+    });
+    $$('.dark').forEach((sec) => {
+      sec.addEventListener('pointermove', (e) => {
+        const r = sec.getBoundingClientRect();
+        sec.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        sec.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+    });
+  }
 })();
