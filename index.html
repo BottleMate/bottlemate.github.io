@@ -16,7 +16,7 @@
   <link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
   <script>
-    if (location.protocol !== 'file:' && 'IntersectionObserver' in window && 'ResizeObserver' in window &&
+    if ('IntersectionObserver' in window && 'ResizeObserver' in window &&
         !matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) {
       try {
         const canvas = document.createElement('canvas');
@@ -330,7 +330,7 @@
           <h2 id="box-title">Unbox, calibrate, drink.</h2>
           <p class="sub">Everything you need to get going, packed in the BottleMate box.</p>
         </header>
-        <figure class="glass inbox-hero reveal-img"><img src="assets/img/paper/box.webp" width="1800" height="804" alt="The BottleMate box: a mailer box with a dark lid sticker and a blue light-ring line running round the sides." loading="lazy"></figure>
+        <figure class="box-float wide reveal"><img src="assets/img/paper/box-cutout.webp" width="911" height="609" alt="The BottleMate box: a dark blue box with the base, the app and the light ring printed on it." loading="lazy"></figure>
         <div class="inbox-items">
           <figure class="glass reveal" data-tilt="5"><div class="pic"><img src="assets/img/base-cutout.webp" width="1200" height="1200" alt="" loading="lazy"></div><figcaption>BottleMate base<span>Scale, screen, knob, light ring</span></figcaption></figure>
           <figure class="glass reveal" data-tilt="5" style="--d:.06s"><div class="pic"><img src="assets/img/paper/manual-mockup.webp" width="1800" height="1125" alt="" loading="lazy"></div><figcaption>User manual<span>A3 fold-out</span></figcaption></figure>

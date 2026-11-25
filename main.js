@@ -47,6 +47,16 @@
     rev.forEach((el) => io.observe(el));
   }
 
+  /* ---------- 3D bundle (classic script: also works when opened from disk) ---------- */
+  window.loadBM3D = () => (window.__bm3d ||= new Promise((resolve, reject) => {
+    if (window.BM3D) { resolve(window.BM3D); return; }
+    const sc = document.createElement('script');
+    sc.src = 'assets/js/bm3d.js';
+    sc.onload = () => (window.BM3D ? resolve(window.BM3D) : reject(new Error('3D bundle missing')));
+    sc.onerror = reject;
+    document.head.append(sc);
+  }));
+
   /* ---------- light-ring teaser: the 3D base cycling through firmware patterns ---------- */
   const mini = $('#ring-mini');
   if (mini) {
@@ -70,7 +80,7 @@
       if (!entry.isIntersecting) return;
       near.disconnect();
       if (document.documentElement.classList.contains('has3d')) {
-        import('./assets/js/base3d.js').then((m) => cycle(m.initRing(mini, { compact: true })))
+        window.loadBM3D().then((m) => cycle(m.initRing(mini, { compact: true })))
           .catch(() => window.BottleMateRing && cycle(new window.BottleMateRing.RingView(mini, { compact: true })));
       } else if (window.BottleMateRing) cycle(new window.BottleMateRing.RingView(mini, { compact: true }));
     }, { rootMargin: '150px' });
@@ -87,7 +97,7 @@
         if (!entry.isIntersecting) return;
         near.disconnect();
         const load = () => {
-          model ??= import('./assets/js/base3d.js');
+          model ??= window.loadBM3D();
           model.then((views) => hero ? views.initHero() : views.initExploded()).catch((err) => {
             if (hero) document.documentElement.classList.remove('has3d');
             console.warn('3D preview unavailable', err);

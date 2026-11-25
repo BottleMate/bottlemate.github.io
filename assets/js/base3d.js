@@ -7,6 +7,7 @@ import { EffectComposer } from '../vendor/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from '../vendor/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from '../vendor/jsm/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from '../vendor/jsm/postprocessing/OutputPass.js';
+import { OLED_DATA } from './oled-data.js';
 const { frame: ringFrame } = window.BottleMateRing;
 
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -37,7 +38,7 @@ const loader = new THREE.TextureLoader();
 const OLED = {};
 function oled(name) {
   if (!OLED[name]) {
-    const t = loader.load(`assets/img/oled/${name}.webp`);
+    const t = loader.load(OLED_DATA[name] || `assets/img/oled/${name}.webp`);
     t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
     OLED[name] = t;
   }
@@ -172,7 +173,7 @@ function buildBase({ internals = false, clear = false } = {}) {
   const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.104, 0.104, 0.006, 48), new THREE.MeshPhysicalMaterial({ color: 0x1a1d24, roughness: 0.25, metalness: 0.8 }));
   cap.position.y = 0.572;
   knob.add(collar, body, cap);
-  knob.position.set(-0.52, 0, 0.36);
+  knob.position.set(-0.27, 0, 0.66);   // just behind the front display panel, as on the product
 
   const order = [];
   if (internals) {

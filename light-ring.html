@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="styles.css">
   <script type="importmap">{ "imports": { "three": "./assets/vendor/three.module.min.js" } }</script>
   <script>
-    if (location.protocol !== 'file:' && 'IntersectionObserver' in window && 'ResizeObserver' in window &&
+    if ('IntersectionObserver' in window && 'ResizeObserver' in window &&
         !matchMedia('(prefers-reduced-motion: reduce)').matches && !navigator.connection?.saveData) {
       try { const c = document.createElement('canvas'); const gl = c.getContext('webgl2') || c.getContext('webgl');
         if (gl) { document.documentElement.classList.add('has3d'); gl.getExtension('WEBGL_lose_context')?.loseContext(); } } catch {}

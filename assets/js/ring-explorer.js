@@ -82,7 +82,7 @@
 
   const use = (v) => { view = v; view.set(selected?.id || 'boot'); controls(); };
   if (document.documentElement.classList.contains('has3d')) {
-    import('./base3d.js').then((m) => use(m.initRing(canvas))).catch((err) => {
+    window.loadBM3D().then((m) => use(m.initRing(canvas))).catch((err) => {
       console.warn('3D ring unavailable', err);
       if (window.BottleMateRing) use(new window.BottleMateRing.RingView(canvas));
     });
