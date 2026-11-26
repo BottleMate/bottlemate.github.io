@@ -238,6 +238,45 @@
     });
   }
 
+  /* ---------- order form: builds an order email (no server) ---------- */
+  const order = $('#order-form');
+  if (order) {
+    const PRICE = 15490;
+    const lkr = (n) => 'LKR ' + n.toLocaleString('en-US');
+    const qty = $('#o-qty'), total = $('#o-total'), err = $('#order-error');
+    qty.addEventListener('change', () => { total.textContent = lkr(PRICE * +qty.value); });
+    let via = 'mail';
+    $$('button[type="submit"]', order).forEach((b) => b.addEventListener('click', () => { via = b.dataset.via; }));
+    order.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = Object.fromEntries(new FormData(order));
+      const req = { name: $('#o-name'), phone: $('#o-phone'), email: $('#o-email'), address: $('#o-address') };
+      Object.values(req).forEach((el) => el.removeAttribute('aria-invalid'));
+      const bad = [];
+      if (!f.name.trim()) bad.push(req.name);
+      if (f.phone.replace(/[^\d]/g, '').length < 9) bad.push(req.phone);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) bad.push(req.email);
+      if (!f.address.trim()) bad.push(req.address);
+      if (bad.length) {
+        bad.forEach((el) => el.setAttribute('aria-invalid', 'true'));
+        err.textContent = 'Please fill in your name, phone, email and delivery address.';
+        bad[0].focus();
+        return;
+      }
+      err.textContent = '';
+      const n = +f.qty;
+      const subject = `[BottleMate] Order: ${n} × BottleMate base`;
+      const body = ['Hello BottleMate team, I would like to order:', '',
+        `Quantity: ${n} × BottleMate base (${lkr(PRICE)} each, incl. VAT)`, `Total: ${lkr(PRICE * n)} + delivery`,
+        `Payment: ${f.pay}`, '', `Name: ${f.name.trim()}`, `Phone: ${f.phone.trim()}`, `Email: ${f.email.trim()}`,
+        'Delivery address:', f.address.trim(), f.note.trim() ? `\nNote: ${f.note.trim()}` : null]
+        .filter((l) => l !== null).join('\n');
+      const enc = encodeURIComponent;
+      if (via === 'gmail') window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${enc(SUPPORT_EMAIL)}&su=${enc(subject)}&body=${enc(body)}`, '_blank', 'noopener');
+      else location.href = `mailto:${SUPPORT_EMAIL}?subject=${enc(subject)}&body=${enc(body)}`;
+    });
+  }
+
   /* ---------- background videos: play muted while on screen ---------- */
   const loops = $$('video[data-autoplay]');
   if (loops.length) {

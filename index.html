@@ -44,6 +44,7 @@
         <a href="app.html">The app</a>
         <a href="light-ring.html">Light ring</a>
         <a href="paperwork.html">Manuals</a>
+        <a href="#order">Order</a>
         <a href="#support">Support</a>
         <a class="btn btn-primary" href="#download">Get the app</a>
       </div>
@@ -338,6 +339,42 @@
           <figure class="glass reveal" data-tilt="5" style="--d:.18s"><div class="pic"><img src="assets/img/paper/warranty-front.webp" width="1400" height="992" alt="" loading="lazy"></div><figcaption>Warranty card<span>Keep it with your receipt</span></figcaption></figure>
         </div>
         <p class="center reveal" style="margin-top:28px"><a class="btn btn-glass" href="paperwork.html">See the manuals and paperwork <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></p>
+      </div>
+    </section>
+
+    <!-- ORDER NOW -->
+    <section class="section" id="order" aria-labelledby="order-title">
+      <div class="container">
+        <div class="glass pad-lg reveal">
+          <div class="split" style="align-items:start">
+            <div>
+              <p class="kicker">Order now</p>
+              <h2 id="order-title">Get your BottleMate.</h2>
+              <p class="sub">The smart base for the bottle you already own: scale, screen, knob and light ring, with the manual, pocket guide and warranty card in the box.</p>
+              <figure class="order-pic"><img src="assets/img/base-cutout.webp" width="1200" height="1200" alt="The BottleMate base." loading="lazy"></figure>
+              <p class="order-price"><span class="order-amount">LKR 15,490</span><span class="mono">incl. 18% VAT · per base</span></p>
+              <ul class="order-points">
+                <li>Works with any bottle, flask or mug</li>
+                <li>Free Android app · works without a phone too</li>
+                <li>Island-wide delivery in Sri Lanka, charge confirmed by email</li>
+                <li>Pay cash on delivery or by bank transfer</li>
+              </ul>
+            </div>
+            <form class="form" id="order-form" novalidate>
+              <div class="field"><label for="o-name">Your name</label><input id="o-name" name="name" autocomplete="name" required></div>
+              <div class="field"><label for="o-phone">Phone</label><input id="o-phone" name="phone" type="tel" autocomplete="tel" placeholder="07X XXX XXXX" required></div>
+              <div class="field full"><label for="o-email">Email</label><input id="o-email" name="email" type="email" autocomplete="email" required></div>
+              <div class="field full"><label for="o-address">Delivery address</label><textarea id="o-address" name="address" autocomplete="street-address" required style="min-height:90px"></textarea></div>
+              <div class="field"><label for="o-qty">Quantity</label><select id="o-qty" name="qty"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+              <div class="field"><label for="o-pay">Payment</label><select id="o-pay" name="pay"><option>Cash on delivery</option><option>Bank transfer</option></select></div>
+              <div class="field full"><label for="o-note">Note <span class="muted">(optional)</span></label><input id="o-note" name="note" placeholder="Anything we should know"></div>
+              <p class="order-total full" aria-live="polite">Total: <b id="o-total">LKR 15,490</b> <span class="mono">+ delivery</span></p>
+              <p class="form-error full" id="order-error" role="alert"></p>
+              <div class="actions full"><button class="btn btn-primary btn-lg" type="submit" data-via="mail">Order with email app</button><button class="btn btn-glass" type="submit" data-via="gmail">Order with Gmail</button></div>
+              <p class="form-note full">Opens your email with the order filled in. Nothing is sent until you press send there. We reply to confirm stock, delivery and payment.</p>
+            </form>
+          </div>
+        </div>
       </div>
     </section>
 
